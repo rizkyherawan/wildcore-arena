@@ -1,0 +1,3106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#f2f6e9">
+  <meta name="description" content="Wildcore Arena. RPG aksi 2.5D dengan joystick analog, Attack, Skill, Defense, dan empat tingkat kesulitan.">
+  <title>Wildcore Arena</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23dbeccd'/%3E%3Cpath d='M20 6 33 20 20 34 7 20Z M20 12v16 M13 20h14' fill='none' stroke='%23356840' stroke-width='2'/%3E%3C/svg%3E">
+  <style id="tailwind-css">
+    /* TAILWIND_START */
+    /*! tailwindcss v4.3.5 | MIT License | https://tailwindcss.com */
+    @layer theme, utilities;
+    @layer theme {
+      :root, :host {
+        --spacing: 0.25rem;
+      }
+    }
+    @layer utilities {
+      .mt-2 {
+        margin-top: calc(var(--spacing) * 2);
+      }
+      .mt-3 {
+        margin-top: calc(var(--spacing) * 3);
+      }
+      .flex {
+        display: flex;
+      }
+      .grid {
+        display: grid;
+      }
+      .items-center {
+        align-items: center;
+      }
+      .items-start {
+        align-items: flex-start;
+      }
+      .justify-between {
+        justify-content: space-between;
+      }
+      .gap-1 {
+        gap: var(--spacing);
+      }
+      .gap-1\.5 {
+        gap: calc(var(--spacing) * 1.5);
+      }
+      .gap-2 {
+        gap: calc(var(--spacing) * 2);
+      }
+      .p-2 {
+        padding: calc(var(--spacing) * 2);
+      }
+    }
+    /* TAILWIND_END */
+  </style>
+  <style>
+    :root {
+      color-scheme: light;
+      --background: #f2f6e9;
+      --panel: #fffef6;
+      --panel-raised: #f4f8ed;
+      --line: #d7e3ca;
+      --ink: #243b29;
+      --muted: #5e745e;
+      --accent: #356840;
+      --button-ink: #fffef5;
+      --green: #6bb867;
+      --gold: #956024;
+      --mono: ui-monospace, SFMono-Regular, Consolas, monospace;
+      --display: Georgia, "Times New Roman", serif;
+    }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: radial-gradient(ellipse at 32% 0%, #e2efcc 0, transparent 46rem), var(--background);
+      font: 14px/1.5 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    button, input { font: inherit; }
+    button { color: inherit; cursor: pointer; touch-action: manipulation; }
+    button:disabled { cursor: default; }
+    button:focus-visible, input:focus-visible, a:focus-visible, canvas:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+    }
+    button, input, canvas { -webkit-tap-highlight-color: transparent; }
+    svg { display: block; flex: 0 0 auto; }
+    .icon {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+    .masthead {
+      background: #fffef6ed;
+      border-bottom: 1px solid var(--line);
+    }
+    .masthead-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      max-width: 1340px;
+      min-height: 70px;
+      padding: 0 28px;
+      margin: auto;
+    }
+    .brand, .masthead-actions, .record, .eyebrow, .badge {
+      display: flex;
+      align-items: center;
+    }
+    .brand { gap: 11px; }
+    .brand-emblem {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border: 1px solid #9ebc8d;
+      border-radius: 11px;
+      color: var(--accent);
+      background: #e5f0d8;
+    }
+    .brand-emblem .icon { width: 24px; height: 24px; }
+    .brand-name { display: block; font: 600 18px/1.1 var(--display); letter-spacing: 1.4px; }
+    .brand-kicker, .eyebrow, .hud-label, .side-label {
+      color: var(--muted);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1.45px;
+      text-transform: uppercase;
+    }
+    .brand-kicker { display: block; margin-top: 5px; font-size: 8px; }
+    .masthead-actions { gap: 8px; }
+    .record { gap: 9px; margin-right: 9px; color: var(--gold); }
+    .record .icon { width: 17px; height: 17px; }
+    .record span { display: block; color: var(--muted); font-size: 9px; }
+    .record strong { display: block; font: 700 13px var(--mono); }
+    .icon-button {
+      display: inline-grid;
+      place-items: center;
+      width: 37px;
+      height: 37px;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: var(--panel);
+      color: var(--muted);
+    }
+    .icon-button:hover:not(:disabled) { color: var(--accent); border-color: #79a676; }
+    .icon-button:disabled { opacity: .42; }
+    .icon-button .icon { width: 17px; height: 17px; }
+    main { max-width: 1340px; margin: auto; padding: 26px 28px 20px; }
+    .headline { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 21px; }
+    .eyebrow { gap: 8px; color: var(--accent); }
+    .eyebrow::before { content: ""; width: 17px; height: 1px; background: currentColor; }
+    h1, h2, h3, p { margin: 0; }
+    h1 { margin: 5px 0 4px; font: 500 clamp(29px, 3vw, 40px)/1.13 var(--display); letter-spacing: -.7px; }
+    .headline p, .side-copy { font-size: 12px; color: var(--muted); }
+    .badge {
+      gap: 7px;
+      border: 1px solid #cbdcbf;
+      border-radius: 8px;
+      padding: 6px 10px;
+      color: var(--muted);
+      background: #edf5e3;
+      white-space: nowrap;
+      font-size: 10px;
+    }
+    .badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+    .game-grid { display: grid; grid-template-columns: minmax(0, 1fr) 252px; align-items: start; gap: 16px; }
+    .game-panel, .side-card {
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--panel);
+      box-shadow: 0 14px 40px #234a2114;
+    }
+    .game-panel { overflow: hidden; }
+    .hud {
+      display: grid;
+      grid-template-columns: minmax(155px, 1.8fr) minmax(72px, .7fr) minmax(81px, .7fr);
+      align-items: center;
+      gap: 15px;
+      min-height: 73px;
+      padding: 11px 16px;
+    }
+    .vitals { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .hud-avatar, .class-emblem {
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      width: 39px;
+      height: 39px;
+      border: 1px solid currentColor;
+      border-radius: 10px;
+      color: var(--role-color, var(--gold));
+      background: #edf5e3;
+    }
+    .bars { flex: 1; min-width: 0; }
+    .bar-caption {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+      color: var(--muted);
+      font: 10px var(--mono);
+    }
+    .bar-caption strong { color: var(--ink); font-weight: 600; }
+    .bar {
+      height: 6px;
+      border-radius: 5px;
+      background: #e2ebd8;
+      overflow: hidden;
+    }
+    .bar-fill { display: block; height: 100%; width: 100%; border-radius: inherit; background: var(--green); }
+    .bar.xp { height: 3px; margin-top: 5px; }
+    .bar.xp .bar-fill { width: 0; background: var(--accent); }
+    .bar.low .bar-fill { background: #d25654; }
+    .hud-stat { min-width: 0; padding-left: 13px; border-left: 1px solid var(--line); }
+    .hud-stat strong { display: block; color: var(--ink); font: 700 19px/1.25 var(--mono); }
+    .hud-stat.score strong { color: var(--gold); font-size: clamp(14px, 1.55vw, 20px); }
+    .hud-stat small { display: block; color: var(--muted); font-size: 9px; }
+    .stage {
+      position: relative;
+      aspect-ratio: 1000 / 590;
+      min-height: 0;
+      overflow: hidden;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: #a8cc83;
+    }
+    .stage[data-mode="menu"] { min-height: 460px; }
+    #arena {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      outline-offset: -4px;
+    }
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 19px;
+      overflow: auto;
+      text-align: center;
+      background: radial-gradient(ellipse at 50% 42%, #fffff6e8, #edf6e1e6);
+    }
+    .screen:focus { outline: none; }
+    .screen-inner { width: min(100%, 650px); margin: auto; }
+    .screen-inner.compact { width: min(100%, 488px); }
+    .screen-emblem {
+      display: grid;
+      place-items: center;
+      width: 47px;
+      height: 47px;
+      margin: 0 auto 9px;
+      color: var(--accent);
+      border: 1px solid #a8c59a;
+      border-radius: 13px;
+      background: #e1efd1;
+      box-shadow: 0 0 28px #729a5129;
+    }
+    .screen-emblem .icon { width: 26px; height: 26px; }
+    .screen-kicker { color: var(--accent); font: 700 9px var(--mono); letter-spacing: 2px; }
+    .screen h2 { margin: 6px 0 7px; font: 500 clamp(25px, 4vw, 44px)/1.06 var(--display); letter-spacing: -.85px; }
+    .screen p { color: var(--muted); font-size: 12px; }
+    .role-options, .upgrade-options {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 9px;
+      margin: 20px 0 14px;
+    }
+    .role-option, .upgrade-option {
+      min-width: 0;
+      padding: 12px 9px 10px;
+      border: 1px solid #cddcc3;
+      border-radius: 10px;
+      background: #fcfef7eb;
+      text-align: left;
+    }
+    .role-option:hover, .upgrade-option:hover { background: #eff6e6; border-color: #8fb083; }
+    .role-option[aria-pressed="true"] { border-color: var(--class-color); background: #e7f3dc; box-shadow: 0 0 18px #76ac5b24; }
+    .role-option .icon, .upgrade-option .icon { color: var(--class-color, var(--accent)); margin-bottom: 7px; }
+    .role-option strong, .upgrade-option strong { display: block; font-size: 13px; }
+    .role-option small, .upgrade-option small { display: block; margin-top: 3px; font-size: 10px; line-height: 1.45; color: var(--muted); }
+    .assassin { --class-color: #207761; }
+    .mage { --class-color: #7356a1; }
+    .knight { --class-color: #97622d; }
+    .lobby-form, .screen-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 9px;
+      margin-top: 14px;
+    }
+    .lobby-form input {
+      width: min(100%, 235px);
+      min-width: 0;
+      height: 42px;
+      padding: 0 12px;
+      color: var(--ink);
+      background: #fafdf4;
+      border: 1px solid #bdceb3;
+      border-radius: 8px;
+      font-size: 12px;
+    }
+    .lobby-form input::placeholder { color: #6b806b; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      min-height: 41px;
+      padding: 8px 15px;
+      border: 1px solid #b7caae;
+      border-radius: 8px;
+      background: #f4f8ed;
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 650;
+    }
+    .button:hover { border-color: var(--accent); }
+    .button.primary { color: var(--button-ink); border-color: #47774c; background: #356840; }
+    .button.primary:hover { background: #285935; }
+    .button .icon { width: 15px; height: 15px; }
+    .screen .screen-note { margin-top: 13px; font-size: 10px; }
+    .result-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 15px 0 0; }
+    .result-cell { background: #f1f6e8; border: 1px solid #d2dfc8; border-radius: 8px; padding: 9px 5px; }
+    .result-cell strong { display: block; font: 700 17px var(--mono); color: var(--gold); }
+    .result-cell span { display: block; margin-top: 3px; color: var(--muted); font-size: 9px; }
+    .stage-footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 11px 15px; color: var(--muted); font-size: 10px; }
+    .stage-footer strong { color: var(--accent); font: 600 9px var(--mono); letter-spacing: 1px; }
+    .side-stack { display: grid; gap: 12px; }
+    .side-card { padding: 16px; }
+    .side-label { margin-bottom: 12px; }
+    .class-header { display: flex; gap: 11px; align-items: center; margin-bottom: 11px; }
+    .class-emblem { width: 43px; height: 43px; }
+    .class-emblem .icon { width: 24px; height: 24px; }
+    .class-header h2 { font: 600 21px/1.14 var(--display); }
+    .class-header p { margin-top: 2px; color: var(--muted); font-size: 10px; overflow-wrap: anywhere; }
+    .side-copy { min-height: 53px; font-size: 11px; }
+    .class-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 12px; }
+    .class-stat { padding: 7px 5px; border: 1px solid var(--line); border-radius: 7px; text-align: center; background: #f4f8ee; }
+    .class-stat strong { display: block; font: 700 13px var(--mono); }
+    .class-stat small { font-size: 8px; color: var(--muted); }
+    .action-button {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      width: 100%;
+      min-height: 52px;
+      margin-bottom: 7px;
+      padding: 8px 9px;
+      text-align: left;
+      border: 1px solid #cadac0;
+      border-radius: 8px;
+      background: #f3f8ed;
+      touch-action: none;
+      user-select: none;
+    }
+    .action-button:hover:not(:disabled), .action-button.is-held { border-color: var(--accent); background: #e6f2db; }
+    .action-button:disabled { opacity: .66; }
+    .action-button .icon { width: 16px; height: 16px; color: var(--role-color, var(--accent)); }
+    .action-text { flex: 1; min-width: 0; }
+    .action-text strong { display: block; font-size: 10px; }
+    .action-text small { display: block; color: var(--muted); font-size: 9px; }
+    kbd {
+      display: inline-block;
+      padding: 3px 5px;
+      min-width: 19px;
+      border: 1px solid #c3d3bb;
+      border-bottom-width: 2px;
+      border-radius: 4px;
+      background: #eef4e8;
+      color: var(--ink);
+      font: 9px var(--mono);
+      text-align: center;
+    }
+    .action-details { margin-top: 9px; color: var(--muted); font-size: 10px; }
+    .key-list { display: grid; gap: 10px; margin: 0; }
+    .key-list div { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .key-list dt { color: var(--muted); font-size: 10px; }
+    .key-list dd { margin: 0; white-space: nowrap; }
+    .touch-controls { display: none; }
+    .touch-button {
+      display: grid;
+      place-items: center;
+      gap: 4px;
+      min-width: 0;
+      padding: 0;
+      border: 1px solid #abc5a0;
+      border-radius: 9px;
+      background: #f5faed;
+      color: var(--ink);
+      font-size: 9px;
+      font-weight: 650;
+      touch-action: none;
+      user-select: none;
+    }
+    .touch-button.is-held { background: #dbedcf; border-color: var(--accent); }
+    .touch-actions { display: flex; gap: 8px; }
+    .touch-actions .touch-button { width: 62px; height: 62px; align-content: center; }
+    .touch-actions .touch-button .icon { color: var(--accent); }
+    .touch-actions .touch-button:disabled { opacity: .65; }
+    .bottom-note { display: flex; justify-content: space-between; gap: 14px; margin-top: 14px; color: var(--muted); font-size: 10px; }
+    .bottom-note code { color: #5e795c; font: 9px var(--mono); }
+    .error-note { padding: 14px; color: #8b3335; background: #f9e9de; font-size: 13px; }
+    @media (max-width: 1080px) {
+      .game-grid { grid-template-columns: minmax(0, 1fr) 213px; gap: 13px; }
+      .side-card { padding: 13px; }
+      .hud { gap: 10px; }
+    }
+    @media (max-width: 880px) {
+      .masthead-inner, main { padding-left: 17px; padding-right: 17px; }
+      .game-grid { grid-template-columns: 1fr; }
+      .side-stack { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .side-copy { min-height: 0; }
+    }
+    @media (max-width: 650px) {
+      .masthead-inner { min-height: 61px; }
+      .brand-name { font-size: 16px; }
+      .brand-emblem { width: 33px; height: 33px; }
+      .masthead-actions { gap: 6px; }
+      .record { gap: 5px; margin-right: 4px; }
+      .record .icon { width: 13px; height: 13px; }
+      .icon-button { width: 34px; height: 34px; }
+      main { padding-top: 17px; }
+      .headline { margin-bottom: 14px; }
+      .headline .badge { display: none; }
+      .headline p { font-size: 11px; }
+      .hud { min-height: 65px; padding: 8px 9px; gap: 6px; grid-template-columns: minmax(116px, 1fr) minmax(53px, .45fr) minmax(60px, .5fr); }
+      .hud-avatar { width: 29px; height: 29px; border-radius: 7px; }
+      .hud-avatar .icon { width: 16px; height: 16px; }
+      .vitals { gap: 6px; }
+      .bar-caption { font-size: 8px; }
+      .hud-stat { padding-left: 7px; }
+      .hud-label { font-size: 7px; letter-spacing: .6px; }
+      .hud-stat strong { font-size: 16px; }
+      .hud-stat small { font-size: 8px; }
+      .stage { aspect-ratio: 1.19; }
+      .stage[data-mode="menu"] { min-height: 394px; }
+      .stage[data-mode="upgrade"], .stage[data-mode="dead"] { min-height: 277px; }
+      .screen { padding: 13px 10px; }
+      .screen-emblem { width: 38px; height: 38px; }
+      .screen-emblem .icon { width: 21px; height: 21px; }
+      .screen h2 { font-size: 30px; }
+      .screen p { font-size: 11px; }
+      .role-options, .upgrade-options { gap: 6px; margin: 14px 0 10px; }
+      .role-option, .upgrade-option { padding: 8px 6px; }
+      .role-option .icon, .upgrade-option .icon { width: 17px; height: 17px; }
+      .role-option strong, .upgrade-option strong { font-size: 11px; }
+      .role-option small, .upgrade-option small { font-size: 9px; }
+      .lobby-form { gap: 6px; }
+      .lobby-form input { font-size: 12px; }
+      .button { padding: 8px 10px; font-size: 11px; }
+      .lobby-form .button { white-space: nowrap; }
+      .side-stack { grid-template-columns: 1fr 1fr; }
+      .side-card { padding: 11px; }
+      .desktop-keys { display: none; }
+      .side-label { font-size: 8px; margin-bottom: 8px; }
+      .class-header { gap: 7px; }
+      .class-header h2 { font-size: 19px; }
+      .class-emblem { width: 32px; height: 32px; }
+      .class-emblem .icon { width: 18px; height: 18px; }
+      .class-stats { gap: 4px; }
+      .class-stat { padding: 5px 2px; }
+      .class-stat strong { font-size: 11px; }
+      .action-button { gap: 5px; padding: 7px 5px; }
+      .action-button kbd { display: none; }
+      .stage-footer { padding: 9px 10px; font-size: 9px; }
+      .bottom-note { font-size: 9px; }
+    }
+    @media (max-width: 760px), (pointer: coarse) {
+      .touch-controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 10px 12px;
+        background: #f5f9ee;
+        border-bottom: 1px solid var(--line);
+      }
+    }
+    @media (max-width: 360px) {
+      .masthead-inner, main { padding-left: 12px; padding-right: 12px; }
+      .touch-actions .touch-button { width: 54px; height: 54px; }
+      .role-option small { font-size: 8px; }
+      .screen .screen-note { font-size: 9px; }
+      .record strong { font-size: 11px; }
+    }
+    .game-panel { position: relative; }
+    .screen { padding-top: 48px; }
+    .arena-tools {
+      position: absolute;
+      z-index: 5;
+      top: 12px;
+      right: 12px;
+    }
+    .arena-tools .icon-button {
+      background: #fffef2ed;
+      border-color: #69875b75;
+      color: #315a38;
+      box-shadow: 0 2px 8px #264a2829;
+    }
+    .arena-tools .icon-button:hover:not(:disabled) { background: #f0f8e5; }
+    .arena-tools .icon-button[aria-pressed="true"] { background: #dcedcc; }
+    .map-overlay {
+      position: absolute;
+      z-index: 2;
+      top: 12px;
+      left: 12px;
+      width: 152px;
+      border: 1px solid #6a895a6e;
+      border-radius: 9px;
+      background: #fffef3ee;
+      box-shadow: 0 3px 10px #264a2826;
+      pointer-events: none;
+    }
+    .map-overlay span { color: #57764b; font-size: 8px; font-weight: 750; letter-spacing: .85px; }
+    .map-overlay strong { color: #386742; font: 700 10px var(--mono); }
+    #minimap {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin-top: 5px;
+      border: 1px solid #8da480a0;
+      border-radius: 5px;
+      background: #b1cf90;
+    }
+    .rune-prompt {
+      position: absolute;
+      z-index: 2;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: calc(100% - 20px);
+      padding: 7px 12px;
+      border: 1px solid #aac29a;
+      border-radius: 9px;
+      color: #2d5635;
+      background: #fffef1f2;
+      box-shadow: 0 3px 12px #2d48243d;
+      text-align: center;
+      font-size: 10px;
+      font-weight: 700;
+      pointer-events: none;
+    }
+    .quest-copy { color: var(--muted); font-size: 11px; }
+    .quest-count { color: #396640; font: 700 11px var(--mono); }
+    .quest-list { list-style: none; margin-bottom: 0; padding: 0; }
+    .quest-list li {
+      padding: 6px 7px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #f5f9ed;
+      font-size: 10px;
+    }
+    .quest-list li.visited { background: #e4f2d8; color: #356840; }
+    .quest-list small { color: var(--muted); font-size: 8px; }
+    .quest-list strong { min-width: 0; font-weight: 650; }
+    .quest-list small { flex: 0 0 auto; }
+    .touch-analog { display: grid; justify-items: center; gap: 4px; }
+    .touch-caption { color: #31573a; font-size: 9px; font-weight: 700; }
+    .joystick {
+      position: relative;
+      width: clamp(96px, 26vw, 122px);
+      aspect-ratio: 1;
+      border: 2px solid #668e60;
+      border-radius: 50%;
+      background: radial-gradient(circle, #eaf5dfee 0 40%, #cfe7bbd9 41% 70%, #9bc58bdb 71%);
+      box-shadow: inset 0 0 0 8px #ffffff30, 0 4px 12px #2347242e;
+      touch-action: none;
+      user-select: none;
+    }
+    .joystick::before, .joystick::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 77%;
+      height: 1px;
+      background: #71996480;
+      transform: translate(-50%, -50%);
+    }
+    .joystick::after { transform: translate(-50%, -50%) rotate(90deg); }
+    .joystick-thumb {
+      position: absolute;
+      z-index: 1;
+      top: 50%;
+      left: 50%;
+      display: grid;
+      place-items: center;
+      width: 44%;
+      aspect-ratio: 1;
+      border: 2px solid #4e784b;
+      border-radius: 50%;
+      background: #fffef4;
+      color: #446d40;
+      box-shadow: 0 3px 9px #2e4d2a43;
+      transform: translate(calc(-50% + var(--stick-x, 0px)), calc(-50% + var(--stick-y, 0px)));
+      pointer-events: none;
+    }
+    .touch-actions { align-items: flex-end; }
+    .touch-actions .touch-button {
+      width: clamp(47px, 13.5vw, 62px);
+      height: clamp(47px, 13.5vw, 62px);
+      border-radius: 50%;
+      background: #fffdf1f5;
+      border-color: #7fa674;
+      box-shadow: 0 4px 10px #2949252b;
+    }
+    .touch-actions .touch-button.is-held { background: #d9eacb; }
+    .touch-actions .touch-skill { background: #3e7048; color: #fffef5; border-color: #72976c; }
+    .touch-actions .touch-skill .icon { color: #f2fbdf; }
+    .touch-actions .touch-rune { width: 43px; height: 43px; font-size: 8px; }
+    .touch-actions .touch-rune .icon { width: 15px; height: 15px; }
+    .touch-actions .touch-rune:disabled { opacity: .48; }
+    .game-panel:is(:fullscreen, .immersive) {
+      display: flex;
+      flex-direction: column;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      border: 0;
+      border-radius: 0;
+      background: #edf5e4;
+    }
+    .game-panel.immersive { position: fixed; inset: 0; z-index: 1000; }
+    body.immersive-open { overflow: hidden; }
+    .game-panel:is(:fullscreen, .immersive) .hud {
+      flex: 0 0 auto;
+      padding-top: max(8px, env(safe-area-inset-top));
+      padding-left: max(12px, env(safe-area-inset-left));
+      padding-right: max(12px, env(safe-area-inset-right));
+    }
+    .game-panel:is(:fullscreen, .immersive) .stage {
+      flex: 1 1 auto;
+      min-height: 0;
+      aspect-ratio: auto;
+      border-bottom: 0;
+    }
+    .game-panel:is(:fullscreen, .immersive) .arena-tools { right: max(12px, env(safe-area-inset-right)); }
+    .game-panel:is(:fullscreen, .immersive) .map-overlay { left: max(12px, env(safe-area-inset-left)); }
+    .game-panel:is(:fullscreen, .immersive) .stage-footer { display: none; }
+    .game-panel:is(:fullscreen, .immersive) .touch-controls {
+      position: absolute;
+      z-index: 4;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 8px max(16px, env(safe-area-inset-right)) max(14px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+      border: 0;
+      background: transparent;
+      pointer-events: none;
+    }
+    .game-panel:is(:fullscreen, .immersive) :is(.joystick, .touch-button) { pointer-events: auto; }
+    @media (max-width: 760px), (pointer: coarse) {
+      .game-panel:is(:fullscreen, .immersive) .rune-prompt { bottom: 147px; }
+      .arena-tools .icon-button { width: 43px; height: 43px; }
+    }
+    @media (max-width: 650px) {
+      .side-stack { grid-template-columns: 1fr 1fr; }
+      .quest-card { grid-column: 1 / -1; }
+      .map-overlay { width: 105px; top: 8px; left: 8px; }
+      .arena-tools { top: 8px; right: 8px; }
+      .map-overlay span { font-size: 7px; letter-spacing: .4px; }
+      .map-overlay strong { font-size: 9px; }
+      .rune-prompt { font-size: 9px; }
+      .touch-controls { padding: 8px 12px; }
+      .touch-actions { gap: 6px; }
+    }
+    @media (max-height: 480px) and (orientation: landscape) {
+      .game-panel:is(:fullscreen, .immersive) .hud { min-height: 48px; padding-bottom: 6px; }
+      .game-panel:is(:fullscreen, .immersive) .hud-avatar { width: 30px; height: 30px; }
+      .game-panel:is(:fullscreen, .immersive) .joystick { width: 98px; }
+      .game-panel:is(:fullscreen, .immersive) .map-overlay { width: 108px; }
+      .game-panel:is(:fullscreen, .immersive) .touch-caption { display: none; }
+      .game-panel:is(:fullscreen, .immersive) .rune-prompt { bottom: 14px; }
+    }
+    :root { --display: system-ui, -apple-system, "Segoe UI", sans-serif; }
+    .brand-name { font-weight: 900; letter-spacing: -.65px; }
+    .brand-emblem { background: linear-gradient(140deg, #f1ffcb, #b3d690); border-color: #8bad75; }
+    .headline h1 { font-weight: 870; letter-spacing: -1.2px; }
+    .screen h2 { font-weight: 860; letter-spacing: -1.25px; }
+    .screen { background: radial-gradient(ellipse at 52% 40%, #fffdf5ef, #e9f6dfdc); }
+    .stage { aspect-ratio: 1150 / 670; }
+    .stage[data-mode="menu"] { min-height: 520px; }
+    .role-option, .upgrade-option, .mode-option { border-width: 1px 1px 3px; }
+    .role-option[aria-pressed="true"] { background: #e5f4d9; }
+    .mode-heading {
+      margin-top: 4px;
+      color: #537454;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+    .mode-options { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; margin: 7px 0 9px; }
+    .mode-option {
+      position: relative;
+      min-width: 0;
+      padding: 8px 5px;
+      border-style: solid;
+      border-color: #c9d9c1;
+      border-radius: 9px;
+      background: #fcfff5;
+      color: #2a4731;
+    }
+    .mode-option strong { display: block; color: var(--mode-color); font-size: 12px; font-weight: 850; }
+    .mode-option small { display: block; color: #576e57; font-size: 9px; }
+    .mode-option:hover, .mode-option[aria-pressed="true"] { border-color: var(--mode-color); background: var(--mode-fill); }
+    .mode-option[data-difficulty="easy"] { --mode-color: #397651; --mode-fill: #e4f6dd; }
+    .mode-option[data-difficulty="medium"] { --mode-color: #256295; --mode-fill: #e4f3ff; }
+    .mode-option[data-difficulty="hard"] { --mode-color: #986025; --mode-fill: #fff2d9; }
+    .mode-option[data-difficulty="wni"] { --mode-color: #9b3b5c; --mode-fill: #ffe5ee; }
+    .mode-option[aria-pressed="true"]::after {
+      content: "";
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--mode-color);
+    }
+    .exp-caption { margin-top: 6px; }
+    .exp-caption strong { color: #5f4d9a; }
+    .bar.xp { height: 4px; margin-top: 0; }
+    .bar.xp .bar-fill { background: #7660be; }
+    .arena-alert {
+      position: absolute;
+      z-index: 3;
+      top: 13px;
+      left: 50%;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      max-width: calc(100% - 24px);
+      padding: 7px 11px;
+      border: 1px solid #c66d4e;
+      border-radius: 9px;
+      background: #fff0da;
+      color: #843821;
+      box-shadow: 0 3px 10px #6c33202a;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+    .arena-alert .icon { width: 19px; height: 19px; }
+    .arena-alert strong { display: block; font-size: 9px; font-weight: 900; letter-spacing: .8px; white-space: nowrap; }
+    .arena-alert small { display: block; font-size: 10px; }
+    .stage[data-danger="attack"] .arena-alert { background: #b8413a; border-color: #93312e; color: #fffaf0; }
+    .stage[data-danger="attack"]::after {
+      content: "";
+      position: absolute;
+      z-index: 1;
+      inset: 0;
+      box-shadow: inset 0 0 42px #c7413b53;
+      pointer-events: none;
+    }
+    .touch-actions {
+      display: grid;
+      grid-template-columns: 54px 64px;
+      grid-template-areas: "altar skill" "defense attack";
+      justify-items: center;
+      align-items: end;
+      gap: 7px;
+    }
+    .touch-actions .touch-button {
+      width: 54px;
+      height: 54px;
+      border-width: 2px;
+      border-color: #fff8dc;
+      box-shadow: 0 4px 0 #31462d5c, 0 7px 14px #2841273b;
+      color: #fffef5;
+      pointer-events: auto;
+    }
+    .touch-actions .touch-button .icon { color: currentColor; }
+    .touch-actions .touch-attack { grid-area: attack; width: 64px; height: 64px; background: linear-gradient(#f58059, #c34c31); }
+    .touch-actions .touch-attack.is-held { background: linear-gradient(#fba378, #d9603d); }
+    .touch-actions .touch-skill { grid-area: skill; background: linear-gradient(#987ad9, #624ba4); }
+    .touch-actions .touch-defense { grid-area: defense; background: linear-gradient(#6aafe2, #2e6c9e); }
+    .touch-actions .touch-rune { grid-area: altar; width: 43px; height: 43px; color: #365b36; background: #f8ffe9; }
+    .touch-actions .touch-rune:disabled { visibility: hidden; }
+    .touch-actions .touch-button:disabled { opacity: .64; }
+    .joystick { pointer-events: auto; }
+    .action-button[data-defense] .icon { color: #2b6c9e; }
+    @media (max-width: 820px), (any-pointer: coarse) {
+      .touch-controls {
+        display: flex;
+        position: absolute;
+        z-index: 4;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        align-items: flex-end;
+        padding: 8px max(13px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(13px, env(safe-area-inset-left));
+        border: 0;
+        background: linear-gradient(transparent, #203a232e);
+        pointer-events: none;
+      }
+      .rune-prompt { bottom: 149px; }
+    }
+    @media (max-width: 650px) {
+      .stage { aspect-ratio: 1.07; }
+      .stage[data-mode="menu"] { min-height: 466px; }
+      .stage[data-mode="playing"] { min-height: min(370px, 52dvh); }
+      .arena-alert { top: 88px; padding: 5px 8px; }
+      .arena-alert .icon { width: 15px; height: 15px; }
+      .arena-alert small { font-size: 9px; }
+      .exp-caption { margin-top: 4px; }
+      .mode-options { gap: 4px; }
+      .mode-option strong { font-size: 10px; }
+      .mode-option small { font-size: 8px; }
+    }
+    @media (max-width: 360px) {
+      .touch-actions { grid-template-columns: 49px 56px; gap: 5px; }
+      .touch-actions .touch-button { width: 49px; height: 49px; }
+      .touch-actions .touch-attack { width: 56px; height: 56px; }
+      .touch-actions .touch-rune { width: 38px; height: 38px; }
+      .mode-option small { display: none; }
+    }
+    @media (max-height: 480px) and (orientation: landscape) {
+      .rune-prompt { bottom: 14px; }
+      .game-panel:is(:fullscreen, .immersive) .touch-controls { padding-bottom: max(10px, env(safe-area-inset-bottom)); }
+    }
+  </style>
+</head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" style="position:absolute;overflow:hidden">
+    <symbol id="i-rune" viewBox="0 0 24 24"><path d="m12 2 9 10-9 10-9-10L12 2Zm0 5v10m-5-5h10m-5-5 3 5-3 5-3-5 3-5Z"/></symbol>
+    <symbol id="i-assassin" viewBox="0 0 24 24"><path d="m4 4 12 10-2 2L4 4Zm16 0L8 14l2 2L20 4ZM3 17l4 4m10-4 4 4M6 18l4-4m4 0 4 4"/></symbol>
+    <symbol id="i-mage" viewBox="0 0 24 24"><path d="m4 20 10-10m-4-4 3 1 1 3 1-3 3-1-3-1-1-3-1 3-3 1Zm9 6v4m-2-2h4M6 7v4m-2-2h4"/></symbol>
+    <symbol id="i-knight" viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4 3 7 7 9 4-2 7-5 7-9V6l-7-3Zm0 5v8m-3-5h6"/></symbol>
+    <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 4h8v7a4 4 0 0 1-8 0V4ZM8 6H4v2a4 4 0 0 0 4 4m8-6h4v2a4 4 0 0 1-4 4m-4 3v5m-4 0h8"/></symbol>
+    <symbol id="i-sound" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4V9Zm12-1c3 2 3 6 0 8m2-10c4 3 4 9 0 12"/></symbol>
+    <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4V9Zm12 1 5 5m0-5-5 5"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="m8 5 12 7-12 7V5Z"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20 4 12a4.6 4.6 0 0 1 6.5-6.5L12 7l1.5-1.5A4.6 4.6 0 0 1 20 12l-8 8Z"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="m13 2-8 12h7l-1 8 8-12h-7l1-8Z"/></symbol>
+    <symbol id="i-skull" viewBox="0 0 24 24"><path d="M7 17a8 8 0 1 1 10 0v4H7v-4Zm3 2v2m4-2v2M8 12h1m6 0h1"/></symbol>
+    <symbol id="i-expand" viewBox="0 0 24 24"><path d="M9 4H4v5m11-5h5v5M4 15v5h5m11-5v5h-5"/></symbol>
+    <symbol id="i-contract" viewBox="0 0 24 24"><path d="M4 9h5V4m11 5h-5V4M9 20v-5H4m11 5v-5h5"/></symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M20 4c-8-1-15 2-15 8a6 6 0 0 0 6 6c6 0 9-7 9-14ZM4 21l11-11"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2.8 20h18.4L12 3Zm0 6v5m0 3v.1"/></symbol>
+  </svg>
+
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="brand">
+        <span class="brand-emblem"><svg class="icon" aria-hidden="true"><use href="#i-rune"/></svg></span>
+        <div><span class="brand-name">WILDCORE</span><span class="brand-kicker">ARENA RPG</span></div>
+      </div>
+      <div class="masthead-actions">
+        <div class="record"><svg class="icon" aria-hidden="true"><use href="#i-trophy"/></svg><div><span id="best-label">Rekor Medium</span><strong id="best-score">0</strong></div></div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <header class="headline">
+      <div><div class="eyebrow">Battle for the Wilds</div><h1>Wildcore Arena</h1><p>Jelajahi hutan, kuasai tiga altar, dan bertahan menghadapi Briar Titan.</p></div>
+      <span class="badge">Hutan terbuka · 4 mode</span>
+    </header>
+    <noscript><p class="error-note">Aktifkan JavaScript di browser untuk bermain.</p></noscript>
+    <p id="canvas-error" class="error-note" role="alert" hidden>Canvas tidak tersedia. Buka file ini di browser yang mendukung Canvas 2D.</p>
+
+    <div class="game-grid">
+      <section class="game-panel" id="game-shell" aria-label="Arena dan status permainan">
+        <div class="hud">
+          <div class="vitals">
+            <span class="hud-avatar" id="hud-avatar"><svg class="icon" aria-hidden="true"><use id="hud-role-icon" href="#i-knight"/></svg></span>
+            <div class="bars">
+              <div class="bar-caption"><strong id="hp-text">145 / 145 HP</strong><span id="level-text">Lv. 1</span></div>
+              <div id="hp-bar" class="bar" role="progressbar" aria-label="Nyawa" aria-valuemin="0" aria-valuemax="145" aria-valuenow="145"><span id="hp-fill" class="bar-fill"></span></div>
+              <div class="bar-caption exp-caption"><strong id="xp-text">0 / 90 EXP</strong><span id="mode-text">Medium</span></div>
+              <div id="xp-bar" class="bar xp" role="progressbar" aria-label="Pengalaman menuju level berikutnya" aria-valuemin="0" aria-valuemax="90" aria-valuenow="0"><span id="xp-fill" class="bar-fill"></span></div>
+            </div>
+          </div>
+          <div class="hud-stat"><span class="hud-label">Gelombang</span><strong id="wave-number">—</strong><small id="enemy-count">Pilih kelas</small></div>
+          <div class="hud-stat score"><span class="hud-label">Poin</span><strong id="score-number">0</strong><small id="kill-count">0 monster</small></div>
+        </div>
+
+        <div class="stage" id="stage" data-mode="menu">
+          <canvas id="arena" width="1150" height="670" tabindex="0" aria-label="Arena permainan Wildcore">Wildcore Arena membutuhkan Canvas.</canvas>
+          <div class="arena-tools flex items-center gap-2">
+            <button class="icon-button" type="button" id="sound-button" aria-label="Matikan suara" title="Suara (M)"><svg class="icon" aria-hidden="true"><use id="sound-icon" href="#i-sound"/></svg></button>
+            <button class="icon-button" type="button" id="pause-button" aria-label="Jeda permainan" title="Jeda (P)" disabled><svg class="icon" aria-hidden="true"><use id="pause-icon" href="#i-pause"/></svg></button>
+            <button class="icon-button" type="button" id="fullscreen-button" aria-label="Layar penuh" aria-pressed="false" title="Layar penuh (F)"><svg class="icon" aria-hidden="true"><use id="fullscreen-icon" href="#i-expand"/></svg></button>
+          </div>
+          <div class="map-overlay p-2" id="map-overlay" hidden>
+            <div class="flex items-center justify-between gap-1"><span>Peta rimba</span><strong id="map-progress">0/3</strong></div>
+            <canvas id="minimap" width="200" height="120" aria-label="Peta hutan dan posisi altar"></canvas>
+          </div>
+          <div class="arena-alert" id="arena-alert" role="status" hidden><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><div><strong id="alert-title">MUSUH MENDEKAT</strong><small id="alert-count">1 musuh dekat</small></div></div>
+          <div class="rune-prompt" id="rune-prompt" hidden></div>
+          <section class="screen" id="menu-screen" aria-labelledby="menu-title" tabindex="-1">
+            <div class="screen-inner">
+              <span class="screen-emblem"><svg class="icon" aria-hidden="true"><use href="#i-leaf"/></svg></span>
+              <span class="screen-kicker">PILIH PETARUNGMU</span>
+              <h2 id="menu-title">Masuk ke Wildcore</h2>
+              <p>Pilih petarung dan tingkat kesulitanmu.</p>
+              <div class="role-options" role="group" aria-label="Pilih kelas">
+                <button class="role-option assassin" type="button" data-role="assassin" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-assassin"/></svg><strong>Assassin</strong><small>Cepat · Tebasan dekat</small></button>
+                <button class="role-option mage" type="button" data-role="mage" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-mage"/></svg><strong>Mage</strong><small>Jarak jauh · Ledakan area</small></button>
+                <button class="role-option knight" type="button" data-role="knight" aria-pressed="true"><svg class="icon" aria-hidden="true"><use href="#i-knight"/></svg><strong>Knight</strong><small>Nyawa tinggi · Perisai</small></button>
+              </div>
+              <div class="mode-heading" id="mode-heading">Tingkat kesulitan</div>
+              <div class="mode-options" role="group" aria-labelledby="mode-heading">
+                <button class="mode-option" type="button" data-difficulty="easy" aria-pressed="false"><strong>Easy</strong><small>Pemanasan</small></button>
+                <button class="mode-option" type="button" data-difficulty="medium" aria-pressed="true"><strong>Medium</strong><small>Seimbang</small></button>
+                <button class="mode-option" type="button" data-difficulty="hard" aria-pressed="false"><strong>Hard</strong><small>Lebih ganas</small></button>
+                <button class="mode-option" type="button" data-difficulty="wni" aria-pressed="false"><strong>WNI</strong><small>Tingkat dewa</small></button>
+              </div>
+              <form class="lobby-form" id="start-form">
+                <label class="sr-only" for="hero-name">Nama karakter</label>
+                <input id="hero-name" maxlength="18" placeholder="Nama karakter (opsional)" autocomplete="off">
+                <button class="button primary" type="submit">Mulai tanding <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+              </form>
+              <p class="screen-note">Briar Titan muncul di gelombang ke-5.<br>Di HP, buka layar penuh dengan ikon di pojok arena.</p>
+            </div>
+          </section>
+
+          <section class="screen" id="paused-screen" aria-labelledby="paused-title" tabindex="-1" hidden>
+            <div class="screen-inner compact">
+              <span class="screen-emblem"><svg class="icon" aria-hidden="true"><use href="#i-pause"/></svg></span>
+              <h2 id="paused-title">Permainan dijeda</h2>
+              <p>Ambil waktu sebentar sebelum kembali bertarung.</p>
+              <div class="screen-actions"><button class="button primary" type="button" id="resume-button">Lanjutkan</button><button class="button" type="button" data-menu>Akhiri run dan pilih kelas</button></div>
+            </div>
+          </section>
+
+          <section class="screen" id="upgrade-screen" aria-labelledby="upgrade-title" tabindex="-1" hidden>
+            <div class="screen-inner">
+              <span class="screen-kicker" id="upgrade-kicker">GELOMBANG SELESAI</span>
+              <h2 id="upgrade-title">Pilih berkah rune</h2>
+              <p id="upgrade-description">Ambil satu peningkatan untuk gelombang berikutnya.</p>
+              <div class="upgrade-options">
+                <button class="upgrade-option" type="button" data-upgrade="power"><svg class="icon" aria-hidden="true"><use href="#i-assassin"/></svg><strong>Taring Rune</strong><small>+14% kekuatan dasar</small></button>
+                <button class="upgrade-option" type="button" data-upgrade="vitality"><svg class="icon" aria-hidden="true"><use href="#i-heart"/></svg><strong>Darah Batu</strong><small>+16 HP maksimum · pulih 32 HP</small></button>
+                <button class="upgrade-option" type="button" data-upgrade="haste"><svg class="icon" aria-hidden="true"><use href="#i-bolt"/></svg><strong>Langkah Angin</strong><small>Gerak lebih cepat · cooldown skill turun</small></button>
+              </div>
+              <p class="screen-note">Setiap pilihan memulihkan 12 HP sebelum lanjut.</p>
+            </div>
+          </section>
+
+          <section class="screen" id="dead-screen" aria-labelledby="dead-title" tabindex="-1" hidden>
+            <div class="screen-inner compact">
+              <span class="screen-kicker" id="death-kicker">AKHIR PERTARUNGAN</span>
+              <h2 id="dead-title">Petarungmu tumbang</h2>
+              <p id="death-description">Coba kelas lain atau pecahkan rekormu.</p>
+              <div class="result-grid"><div class="result-cell"><strong id="final-score">0</strong><span>Poin</span></div><div class="result-cell"><strong id="final-kills">0</strong><span>Monster</span></div><div class="result-cell"><strong id="final-wave">1</strong><span>Gelombang</span></div></div>
+              <div class="screen-actions"><button class="button primary" type="button" id="retry-button">Main lagi</button><button class="button" type="button" data-menu>Pilih kelas</button></div>
+            </div>
+          </section>
+          <div id="touch-controls" class="touch-controls" aria-label="Kontrol sentuh" hidden>
+            <div class="touch-analog">
+              <div class="joystick" id="joystick" role="group" aria-label="Geser joystick untuk bergerak">
+                <span class="joystick-thumb" aria-hidden="true"><svg class="icon"><use href="#i-leaf"/></svg></span>
+              </div>
+              <span class="touch-caption" aria-hidden="true">Gerak</span>
+            </div>
+            <div class="touch-actions" role="group" aria-label="Aksi petarung">
+              <button class="touch-button touch-rune" type="button" data-interact aria-label="Aktifkan altar terdekat" disabled><svg class="icon" aria-hidden="true"><use href="#i-rune"/></svg><span>Altar</span></button>
+              <button class="touch-button touch-attack" type="button" data-hold="attack" data-aim aria-label="Attack, tahan atau geser untuk membidik"><svg class="icon" aria-hidden="true"><use href="#i-assassin"/></svg><span>Attack</span></button>
+              <button class="touch-button touch-skill" type="button" data-skill aria-label="Skill kelas"><svg class="icon" aria-hidden="true"><use href="#i-bolt"/></svg><span id="touch-skill-label">Skill</span></button>
+              <button class="touch-button touch-defense" type="button" data-defense aria-label="Defense, aktifkan perisai"><svg class="icon" aria-hidden="true"><use href="#i-knight"/></svg><span id="touch-defense-label">Defense</span></button>
+            </div>
+          </div>
+        </div>
+        <div class="stage-footer"><strong id="arena-status">MENUNGGU PETARUNG</strong><span id="arena-hint">Pilih kelas, lalu masuk arena.</span></div>
+      </section>
+
+      <aside class="side-stack" aria-label="Petarung dan kontrol">
+        <section class="side-card quest-card" aria-labelledby="quest-title">
+          <div class="flex items-start justify-between gap-2">
+            <h2 class="side-label" id="quest-title">Berkah Rimba</h2><strong class="quest-count" id="quest-count">0 / 3</strong>
+          </div>
+          <p class="quest-copy" id="quest-description">Temukan tiga altar. Setiap altar memberi poin, XP, dan pemulihan HP.</p>
+          <ul class="quest-list mt-3 grid gap-1.5">
+            <li class="flex items-center justify-between gap-2" data-altar="dawn"><strong>Scout Camp</strong><small>Belum aktif</small></li>
+            <li class="flex items-center justify-between gap-2" data-altar="spring"><strong>Jade Spring</strong><small>Belum aktif</small></li>
+            <li class="flex items-center justify-between gap-2" data-altar="sun"><strong>Sunspire Ruins</strong><small>Belum aktif</small></li>
+          </ul>
+          <p class="quest-copy mt-2">Damar memberi +15 poin. Daun obat memulihkan hingga 26 HP.</p>
+        </section>
+        <section class="side-card" aria-labelledby="class-title">
+          <div class="side-label">Petarung</div>
+          <div class="class-header"><span class="class-emblem" id="class-emblem"><svg class="icon" aria-hidden="true"><use id="class-icon" href="#i-knight"/></svg></span><div><h2 id="class-title">Knight</h2><p id="class-subtitle">Penjaga garis depan</p></div></div>
+          <p class="side-copy" id="class-description">Tebasan lebar dan perisai untuk bertahan ketika dikepung.</p>
+          <div class="class-stats"><div class="class-stat"><strong id="class-health">145</strong><small>HP maks.</small></div><div class="class-stat"><strong id="class-damage">34</strong><small>Serangan</small></div><div class="class-stat"><strong id="class-speed">174</strong><small>Kecepatan</small></div></div>
+        </section>
+
+        <section class="side-card" aria-labelledby="actions-title">
+          <h2 class="side-label" id="actions-title">Aksi kelas</h2>
+          <button type="button" class="action-button" data-hold="attack" id="attack-button" disabled><svg class="icon" aria-hidden="true"><use id="attack-icon" href="#i-knight"/></svg><span class="action-text"><strong id="attack-name">Broad Slash</strong><small>Serangan dasar</small></span><kbd>Space</kbd></button>
+          <button type="button" class="action-button" data-skill id="skill-button" disabled><svg class="icon" aria-hidden="true"><use href="#i-bolt"/></svg><span class="action-text"><strong id="skill-name">Aegis Slam</strong><small id="skill-status">Siap</small></span><kbd>Q</kbd></button>
+          <button type="button" class="action-button" data-defense id="defense-button" disabled><svg class="icon" aria-hidden="true"><use href="#i-knight"/></svg><span class="action-text"><strong>Defense</strong><small id="defense-status">Siap</small></span><kbd>Shift</kbd></button>
+          <p id="skill-description" class="action-details">Hantam musuh sekitar dan aktifkan perisai selama 2,8 detik.</p>
+          <p class="action-details">Defense mengurangi kerusakan selama 1,4 detik. Di HP, tahan Attack atau geser untuk membidik.</p>
+        </section>
+
+        <section class="side-card desktop-keys" aria-labelledby="keys-title">
+          <h2 class="side-label" id="keys-title">Kontrol keyboard</h2>
+          <dl class="key-list"><div><dt>Gerak</dt><dd><kbd>WASD</kbd> <kbd>↑ ↓ ← →</kbd></dd></div><div><dt>Attack</dt><dd><kbd>Space</kbd></dd></div><div><dt>Skill</dt><dd><kbd>Q</kbd></dd></div><div><dt>Defense</dt><dd><kbd>Shift</kbd></dd></div><div><dt>Aktifkan altar</dt><dd><kbd>E</kbd></dd></div><div><dt>Layar penuh</dt><dd><kbd>F</kbd></dd></div><div><dt>Jeda</dt><dd><kbd>P</kbd> <kbd>Esc</kbd></dd></div></dl>
+        </section>
+      </aside>
+    </div>
+
+    <footer class="bottom-note"><span>Rekor tersimpan di browser ini.</span><code>WILDCORE / ARENA RPG</code></footer>
+    <div id="announcer" class="sr-only" role="status" aria-live="polite"></div>
+  </main>
+
+  <script>
+    // ENGINE_START
+    const Runeveil = (() => {
+      'use strict';
+
+      const WIDTH = 3520;
+      const HEIGHT = 2120;
+      const VIEW_WIDTH = 1150;
+      const VIEW_HEIGHT = 670;
+      const WALL = { left: 39, right: WIDTH - 39, top: 114, bottom: HEIGHT - 43 };
+      const TAU = Math.PI * 2;
+      const clamp = (value, minimum, maximum) => Math.max(minimum, Math.min(maximum, value));
+      const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+      const START = { x: 530, y: 630 };
+      const ALTARS = [
+        { id: 'dawn', name: 'Scout Camp', x: 490, y: 488, color: '#e4ac4d' },
+        { id: 'spring', name: 'Jade Spring', x: 1080, y: 1530, color: '#4f9d9e' },
+        { id: 'sun', name: 'Sunspire Ruins', x: 2780, y: 530, color: '#bd7aa5' }
+      ];
+      const PATHS = [
+        [[112, 470], [490, 488], [880, 580], [1230, 535], [1520, 505], [2230, 505], [2780, 530], [3390, 402]],
+        [[490, 488], [580, 800], [710, 1130], [1080, 1530], [1390, 1490], [2210, 1460], [2510, 1630], [3230, 1760]],
+        [[2780, 530], [2670, 1030], [2510, 1630], [2910, 1940]]
+      ];
+      const BRIDGES = [505, 1460];
+      const RIVER_HALF_WIDTH = 85;
+      const riverX = y => 1640 + Math.sin(y * 0.0036 + 0.1) * 175 + y * 0.135;
+      const inRiver = (x, y) => Math.abs(x - riverX(y)) < RIVER_HALF_WIDTH && !BRIDGES.some(bridge => Math.abs(y - bridge) <= 29);
+      const difficulties = {
+        easy: { label: 'Easy', playerHealth: 1.17, health: 0.82, damage: 0.67, speed: 0.88, extra: -1, spawnGap: 1.18, recovery: 1.16 },
+        medium: { label: 'Medium', playerHealth: 1, health: 1, damage: 1, speed: 1, extra: 0, spawnGap: 1, recovery: 1 },
+        hard: { label: 'Hard', playerHealth: 1, health: 1.22, damage: 1.31, speed: 1.11, extra: 2, spawnGap: 0.91, recovery: 0.91 },
+        wni: { label: 'WNI', playerHealth: 0.94, health: 1.49, damage: 1.68, speed: 1.24, extra: 4, spawnGap: 0.79, recovery: 0.82 }
+      };
+
+      const roles = {
+        assassin: {
+          label: 'Assassin', subtitle: 'Pemburu bayangan', color: '#79e3c8', ink: '#207761',
+          dark: '#284f51', health: 88, damage: 28, speed: 254, reach: 76,
+          arc: 0.89, attackDelay: 0.31, skillDelay: 5.4,
+          attack: 'Twin Slash', skill: 'Shadowstep',
+          description: 'Petarung tercepat. Masuk, tebas musuh dari dekat, lalu melesat keluar.',
+          skillDescription: 'Meluncur ke arah gerak dan menebas monster di lintasan. Kebal sesaat ketika melesat.'
+        },
+        mage: {
+          label: 'Mage', subtitle: 'Pengendali rune', color: '#d6a9ff', ink: '#7356a1',
+          dark: '#59427b', health: 82, damage: 26, speed: 196, reach: 610,
+          arc: 0, attackDelay: 0.43, skillDelay: 6.8,
+          attack: 'Arcane Bolt', skill: 'Arcane Nova',
+          description: 'Lontarkan sihir dari jarak jauh. Jaga jarak saat monster mulai mendekat.',
+          skillDescription: 'Meledakkan rune pada monster terdekat dalam jangkauan, atau di sekitarmu jika tidak ada target.'
+        },
+        knight: {
+          label: 'Knight', subtitle: 'Penjaga garis depan', color: '#f5d293', ink: '#97622d',
+          dark: '#675233', health: 145, damage: 34, speed: 174, reach: 91,
+          arc: 1.25, attackDelay: 0.49, skillDelay: 6.4,
+          attack: 'Broad Slash', skill: 'Aegis Slam',
+          description: 'Tebasan lebar dan perisai untuk bertahan ketika dikepung.',
+          skillDescription: 'Hantam monster sekitar dan kurangi 70% kerusakan yang diterima selama 2,8 detik.'
+        }
+      };
+
+      const monsters = {
+        slime: { health: 43, speed: 68, damage: 10, radius: 19, reach: 43, windup: 0.44, recovery: 1.12, points: 90, xp: 24, color: '#79b6a0' },
+        wisp: { health: 34, speed: 112, damage: 9, radius: 15, reach: 36, windup: 0.3, recovery: 0.93, points: 120, xp: 30, color: '#c596ef' },
+        caster: { health: 57, speed: 70, damage: 13, radius: 19, reach: 260, windup: 0.62, recovery: 1.86, points: 170, xp: 38, color: '#f1a077' },
+        warden: { health: 325, speed: 52, damage: 21, radius: 34, reach: 360, windup: 0.86, recovery: 2.55, points: 700, xp: 95, color: '#ec8cae' }
+      };
+
+      function vector(x, y) {
+        const length = Math.hypot(x, y);
+        return length > 0 ? { x: x / length, y: y / length } : { x: 0, y: 0 };
+      }
+
+      function segmentDistanceSquared(x, y, startX, startY, endX, endY) {
+        const dx = endX - startX;
+        const dy = endY - startY;
+        const lengthSquared = dx * dx + dy * dy;
+        const t = lengthSquared ? clamp(((x - startX) * dx + (y - startY) * dy) / lengthSquared, 0, 1) : 0;
+        return (x - (startX + t * dx)) ** 2 + (y - (startY + t * dy)) ** 2;
+      }
+
+      function keepInside(actor) {
+        actor.x = clamp(actor.x, WALL.left + actor.radius, WALL.right - actor.radius);
+        actor.y = clamp(actor.y, WALL.top + actor.radius, WALL.bottom - actor.radius);
+      }
+
+      function forestProps() {
+        let seed = 205163;
+        const random = () => {
+          seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+          return seed / 4294967296;
+        };
+        const props = [];
+        for (let attempt = 0; attempt < 1900 && props.length < 324; attempt++) {
+          const x = 54 + random() * (WIDTH - 108);
+          const y = 57 + random() * (HEIGHT - 114);
+          if (Math.abs(x - riverX(y)) < RIVER_HALF_WIDTH + 42 || distance({ x, y }, START) < 100) continue;
+          if (ALTARS.some(altar => distance(altar, { x, y }) < 109)) continue;
+          if (PATHS.some(path => path.slice(1).some(([ex, ey], index) => segmentDistanceSquared(x, y, ...path[index], ex, ey) < 56 ** 2))) continue;
+          if (props.some(prop => (prop.x - x) ** 2 + (prop.y - y) ** 2 < 49 ** 2)) continue;
+          const type = attempt % 7 === 0 ? 'rock' : attempt % 5 === 0 ? 'palm' : 'tree';
+          props.push({ x, y, type, radius: type === 'rock' ? 20 + random() * 7 : 15 + random() * 7, crown: 34 + random() * 16, variation: random() });
+        }
+        return props;
+      }
+
+      const PROPS = forestProps();
+      const CELL_SIZE = 144;
+      const CELL_COLUMNS = Math.ceil(WIDTH / CELL_SIZE);
+      const CELL_ROWS = Math.ceil(HEIGHT / CELL_SIZE);
+      const propCells = Array.from({ length: CELL_COLUMNS * CELL_ROWS }, () => []);
+      for (const prop of PROPS) {
+        propCells[Math.floor(prop.y / CELL_SIZE) * CELL_COLUMNS + Math.floor(prop.x / CELL_SIZE)].push(prop);
+      }
+
+      function localProps(x, y, range) {
+        const firstColumn = clamp(Math.floor((x - range) / CELL_SIZE), 0, CELL_COLUMNS - 1);
+        const lastColumn = clamp(Math.floor((x + range) / CELL_SIZE), 0, CELL_COLUMNS - 1);
+        const firstRow = clamp(Math.floor((y - range) / CELL_SIZE), 0, CELL_ROWS - 1);
+        const lastRow = clamp(Math.floor((y + range) / CELL_SIZE), 0, CELL_ROWS - 1);
+        const nearby = [];
+        for (let row = firstRow; row <= lastRow; row++) {
+          for (let column = firstColumn; column <= lastColumn; column++) nearby.push(...propCells[row * CELL_COLUMNS + column]);
+        }
+        return nearby;
+      }
+
+      function clearGround(x, y, radius) {
+        return !localProps(x, y, radius + 28).some(prop => (prop.x - x) ** 2 + (prop.y - y) ** 2 < (prop.radius + radius) ** 2);
+      }
+
+      function moveActor(actor, dx, dy) {
+        const beforeX = actor.x;
+        const beforeY = actor.y;
+        actor.x += dx;
+        actor.y += dy;
+        keepInside(actor);
+        for (const prop of localProps(actor.x, actor.y, (actor.radius + 28) * 2)) {
+          const minimum = actor.radius + prop.radius;
+          if (Math.abs(actor.x - prop.x) >= minimum || Math.abs(actor.y - prop.y) >= minimum) continue;
+          const range = distance(actor, prop);
+          if (range >= minimum) continue;
+          const away = range > 0 ? vector(actor.x - prop.x, actor.y - prop.y) : vector(-dx || 1, -dy);
+          actor.x = prop.x + away.x * (minimum + 0.1);
+          actor.y = prop.y + away.y * (minimum + 0.1);
+          keepInside(actor);
+        }
+        if (!clearGround(actor.x, actor.y, actor.radius)) {
+          actor.x = beforeX;
+          actor.y = beforeY;
+        }
+      }
+
+      function steer(enemy, direction) {
+        const length = enemy.radius + 41;
+        const nearby = localProps(enemy.x, enemy.y, length + enemy.radius + 32);
+        const free = heading => {
+          const farX = enemy.x + heading.x * length;
+          const farY = enemy.y + heading.y * length;
+          return !nearby.some(prop => {
+            const dx = prop.x - enemy.x;
+            const dy = prop.y - enemy.y;
+            if (dx * heading.x + dy * heading.y <= 0) return false;
+            return segmentDistanceSquared(prop.x, prop.y, enemy.x, enemy.y, farX, farY) < (prop.radius + enemy.radius + 4) ** 2;
+          });
+        };
+        if (free(direction)) return direction;
+        const sign = enemy.phase < Math.PI ? 1 : -1;
+        const angle = Math.atan2(direction.y, direction.x);
+        for (const turn of [0.89 * sign, -0.89 * sign, 1.51 * sign, -1.51 * sign]) {
+          const heading = { x: Math.cos(angle + turn), y: Math.sin(angle + turn) };
+          if (free(heading)) return heading;
+        }
+        return direction;
+      }
+
+      function spawnPlan(wave, difficultyKey) {
+        const isBossWave = wave % 5 === 0;
+        const baseCount = isBossWave ? Math.min(5 + Math.floor(wave / 5), 12) : Math.min(4 + (wave - 1) * 2, 22);
+        const count = clamp(baseCount + difficulties[difficultyKey].extra, 3, 26);
+        const firstWisp = difficultyKey === 'hard' || difficultyKey === 'wni' ? 1 : 2;
+        const firstCaster = difficultyKey === 'wni' ? 2 : 3;
+        const plan = Array.from({ length: count }, (_, index) => {
+          if (wave >= firstCaster && index % 4 === 3) return 'caster';
+          if (wave >= firstWisp && index % 3 === 1) return 'wisp';
+          return 'slime';
+        });
+        if (isBossWave) plan.unshift('warden');
+        return plan;
+      }
+
+      class Run {
+        constructor(roleKey, name, difficultyKey = 'medium', random = Math.random) {
+          this.roleKey = Object.hasOwn(roles, roleKey) ? roleKey : 'knight';
+          this.role = roles[this.roleKey];
+          this.difficultyKey = Object.hasOwn(difficulties, difficultyKey) ? difficultyKey : 'medium';
+          this.difficulty = difficulties[this.difficultyKey];
+          this.name = name;
+          this.random = random;
+          const maxHealth = Math.round(this.role.health * this.difficulty.playerHealth);
+          this.player = {
+            ...START, radius: 16,
+            health: maxHealth, maxHealth,
+            speed: this.role.speed, power: 1, skillFactor: 1,
+            angle: -Math.PI / 2, face: 1, moving: false,
+            attackTimer: 0, skillTimer: 0, defenseTimer: 0, guard: 0, aim: null,
+            invulnerable: 0, shield: 0, hurtFlash: 0
+          };
+          this.mode = 'playing';
+          this.wave = 0;
+          this.waveTime = 0;
+          this.time = 0;
+          this.score = 0;
+          this.kills = 0;
+          this.level = 1;
+          this.xp = 0;
+          this.nextXp = 90;
+          this.enemies = [];
+          this.bolts = [];
+          this.pickups = [];
+          this.amber = 0;
+          this.visitedAltars = new Set();
+          this.effects = [];
+          this.events = [];
+          this.lastBonus = 0;
+          this.beginWave();
+        }
+
+        beginWave() {
+          this.wave++;
+          this.waveTime = 0;
+          this.spawnTimer = 0.64;
+          this.pending = spawnPlan(this.wave, this.difficultyKey);
+          this.enemies = [];
+          this.bolts = [];
+          this.player.invulnerable = Math.max(this.player.invulnerable, 0.8);
+          this.player.skillTimer = Math.min(this.player.skillTimer, 1.2);
+          this.player.defenseTimer = Math.min(this.player.defenseTimer, 1.1);
+          this.mode = 'playing';
+          this.events.push('wave');
+        }
+
+        chooseUpgrade(key) {
+          if (this.mode !== 'upgrade') return false;
+          const player = this.player;
+          if (key === 'power') {
+            player.power += 0.14;
+          } else if (key === 'vitality') {
+            player.maxHealth += 16;
+            player.health += 32;
+          } else if (key === 'haste') {
+            player.speed = Math.min(player.speed + 16, 410);
+            player.skillFactor = Math.max(0.45, player.skillFactor * 0.9);
+          } else {
+            return false;
+          }
+          player.health = Math.min(player.maxHealth, player.health + 12);
+          this.beginWave();
+          return true;
+        }
+
+        spawn(kind) {
+          const spec = monsters[kind];
+          const margin = spec.radius + 9;
+          const player = this.player;
+          let position = null;
+          const baseAngle = this.random() * TAU;
+          for (let attempt = 0; attempt < 32; attempt++) {
+            const angle = baseAngle + attempt * 2.39996;
+            const range = 273 + this.random() * 175;
+            const x = clamp(player.x + Math.cos(angle) * range, WALL.left + margin, WALL.right - margin);
+            const y = clamp(player.y + Math.sin(angle) * range, WALL.top + margin, WALL.bottom - margin);
+            if (Math.hypot(x - player.x, y - player.y) < 205 || !clearGround(x, y, spec.radius + 6) || inRiver(x, y)) continue;
+            position = { x, y };
+            break;
+          }
+          if (!position) {
+            const altar = ALTARS.reduce((farthest, candidate) => distance(candidate, player) > distance(farthest, player) ? candidate : farthest);
+            position = { x: altar.x, y: altar.y };
+          }
+          const scaling = 1 + (this.wave - 1) * 0.105;
+          const health = Math.round(spec.health * scaling * this.difficulty.health);
+          this.enemies.push({
+            kind, spec, ...position, radius: spec.radius, health, maxHealth: health,
+            speed: spec.speed * this.difficulty.speed * Math.min(1.6, 1 + (this.wave - 1) * 0.025),
+            damage: Math.round(spec.damage * this.difficulty.damage * (1 + (this.wave - 1) * 0.075)),
+            spawning: 0.65, windup: 0, attackAngle: 0, cooldown: 0.15,
+            pushX: 0, pushY: 0, hurt: 0, face: 1, phase: this.random() * TAU
+          });
+        }
+
+        closestEnemy(maxDistance) {
+          let closest = null;
+          let best = maxDistance;
+          for (const enemy of this.enemies) {
+            if (enemy.health <= 0 || enemy.spawning > 0) continue;
+            const range = distance(this.player, enemy);
+            if (range < best) { closest = enemy; best = range; }
+          }
+          return closest;
+        }
+
+        scanThreats() {
+          let count = 0;
+          let nearest = null;
+          let nearestRange = Infinity;
+          let incoming = false;
+          for (const enemy of this.enemies) {
+            if (enemy.health <= 0 || enemy.spawning > 0) continue;
+            const range = distance(enemy, this.player);
+            const attacking = enemy.windup > 0 && range <= enemy.spec.reach + 15;
+            if (range > 235 && !attacking) continue;
+            count++;
+            incoming ||= attacking;
+            if (range < nearestRange) { nearestRange = range; nearest = enemy; }
+          }
+          return { count, nearest, nearestRange, incoming };
+        }
+
+        nearbyAltar() {
+          return ALTARS.find(altar => !this.visitedAltars.has(altar.id) && distance(altar, this.player) <= 85) || null;
+        }
+
+        activateAltar() {
+          if (this.mode !== 'playing') return false;
+          const altar = this.nearbyAltar();
+          if (!altar) return false;
+          this.visitedAltars.add(altar.id);
+          this.score += 160;
+          this.player.health = Math.min(this.player.maxHealth, this.player.health + 24);
+          this.addXP(28);
+          this.effect('ring', { x: altar.x, y: altar.y, radius: 104, color: '#f5d580' }, 0.8);
+          this.burst(altar.x, altar.y, '#f7da82', 20);
+          this.label('+160', altar.x, altar.y - 39, '#f7df99');
+          this.events.push('altar');
+          if (this.visitedAltars.size === ALTARS.length) {
+            this.score += 480;
+            this.player.power += 0.18;
+            this.addXP(40);
+            this.label('BERKAH RIMBA +480', this.player.x, this.player.y - 58, '#f5e5a3');
+            this.events.push('blessing');
+          }
+          return true;
+        }
+
+        effect(type, values, life) {
+          if (this.effects.length >= 220) this.effects.shift();
+          this.effects.push({ type, ...values, life, duration: life });
+        }
+
+        burst(x, y, color, count = 10) {
+          for (let index = 0; index < count; index++) {
+            const angle = this.random() * TAU;
+            const speed = 35 + this.random() * 125;
+            this.effect('particle', { x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, color, size: 1.8 + this.random() * 3 }, 0.23 + this.random() * 0.37);
+          }
+        }
+
+        label(text, x, y, color) {
+          this.effect('label', { text, x, y, color }, 0.86);
+        }
+
+        hitEnemy(enemy, damage, sourceX, sourceY, force = 105) {
+          if (enemy.health <= 0 || enemy.spawning > 0) return;
+          const amount = Math.round(damage);
+          enemy.health = Math.max(0, enemy.health - amount);
+          enemy.hurt = 0.18;
+          const direction = vector(enemy.x - sourceX, enemy.y - sourceY);
+          enemy.pushX = direction.x * force;
+          enemy.pushY = direction.y * force;
+          this.label(String(amount), enemy.x, enemy.y - enemy.radius - 8, '#f4dcaa');
+          this.burst(enemy.x, enemy.y - 8, this.role.color, 5);
+          this.events.push('hit');
+          if (enemy.health > 0) return;
+
+          const points = enemy.spec.points + (this.wave - 1) * 12;
+          this.kills++;
+          this.score += points;
+          this.pickups.push({ type: 'amber', x: enemy.x, y: enemy.y, life: 36 });
+          if (this.kills % 4 === 0 || enemy.kind === 'warden') {
+            this.pickups.push({ type: 'herb', x: enemy.x + 22, y: enemy.y, life: 38 });
+          }
+          if (this.pickups.length > 110) this.pickups.splice(0, this.pickups.length - 110);
+          this.burst(enemy.x, enemy.y, enemy.spec.color, enemy.kind === 'warden' ? 34 : 16);
+          this.label(`+${points}`, enemy.x, enemy.y - enemy.radius - 25, '#f5d293');
+          this.events.push('kill');
+          this.addXP(enemy.spec.xp);
+        }
+
+        addXP(amount) {
+          this.xp += amount;
+          while (this.xp >= this.nextXp) {
+            this.xp -= this.nextXp;
+            this.level++;
+            this.nextXp = 90 + (this.level - 1) * 40;
+            this.player.maxHealth += 8;
+            this.player.health = Math.min(this.player.maxHealth, this.player.health + 18);
+            this.player.power += 0.07;
+            this.effect('ring', { x: this.player.x, y: this.player.y, radius: 95, color: '#f5d293' }, 0.75);
+            this.label(`LEVEL ${this.level}`, this.player.x, this.player.y - 47, '#f5d293');
+            this.events.push('level');
+          }
+        }
+
+        hurtPlayer(damage) {
+          const player = this.player;
+          if (player.invulnerable > 0 || this.mode !== 'playing') return;
+          let amount = damage;
+          if (player.guard > 0) amount = Math.ceil(damage * 0.2);
+          else if (player.shield > 0) amount = Math.ceil(damage * 0.3);
+          player.health = Math.max(0, player.health - amount);
+          player.invulnerable = 0.62;
+          player.hurtFlash = 0.21;
+          this.label(`−${amount}`, player.x, player.y - 40, '#f895b6');
+          this.burst(player.x, player.y - 9, '#f895b6', 8);
+          this.events.push('hurt');
+          if (player.health === 0) {
+            this.mode = 'dead';
+            this.burst(player.x, player.y, this.role.color, 24);
+            this.events.push('dead');
+          }
+        }
+
+        fire(team, x, y, angle, speed, damage, color, radius, life) {
+          if (this.bolts.length >= 125) this.bolts.shift();
+          this.bolts.push({ team, x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, damage, color, radius, life });
+        }
+
+        attack(aim) {
+          const player = this.player;
+          if (this.mode !== 'playing' || player.attackTimer > 0) return false;
+          const role = this.role;
+          let angle = player.angle;
+          if (aim) angle = Math.atan2(aim.y, aim.x);
+          else {
+            const target = this.closestEnemy(role.reach + 20);
+            if (target) angle = Math.atan2(target.y - player.y, target.x - player.x);
+          }
+          player.angle = angle;
+          player.face = Math.cos(angle) < 0 ? -1 : 1;
+          player.attackTimer = role.attackDelay;
+          const damage = role.damage * player.power;
+          if (this.roleKey === 'mage') {
+            this.fire('player', player.x + Math.cos(angle) * 21, player.y + Math.sin(angle) * 21, angle, 508, damage, role.color, 6, 1.28);
+            this.burst(player.x + Math.cos(angle) * 20, player.y + Math.sin(angle) * 20, role.color, 4);
+          } else {
+            this.effect('slash', { x: player.x, y: player.y, radius: role.reach, arc: role.arc, angle, color: role.color }, 0.23);
+            for (const enemy of this.enemies) {
+              const direction = vector(enemy.x - player.x, enemy.y - player.y);
+              const facing = direction.x * Math.cos(angle) + direction.y * Math.sin(angle);
+              if (distance(player, enemy) <= role.reach + enemy.radius && (facing >= Math.cos(role.arc) || distance(player, enemy) < 12)) {
+                this.hitEnemy(enemy, damage, player.x, player.y);
+              }
+            }
+          }
+          this.events.push('attack');
+          return true;
+        }
+
+        defend() {
+          const player = this.player;
+          if (this.mode !== 'playing' || player.defenseTimer > 0) return false;
+          player.guard = 1.4;
+          player.defenseTimer = 4.8;
+          this.effect('ring', { x: player.x, y: player.y, radius: 69, color: '#9bd6fb' }, 0.47);
+          this.events.push('defense');
+          return true;
+        }
+
+        areaHit(x, y, radius, damage, color) {
+          this.effect('ring', { x, y, radius, color }, 0.64);
+          this.burst(x, y, color, 21);
+          for (const enemy of this.enemies) {
+            if (Math.hypot(enemy.x - x, enemy.y - y) <= radius + enemy.radius) this.hitEnemy(enemy, damage, x, y, 230);
+          }
+        }
+
+        skill(movement) {
+          const player = this.player;
+          if (this.mode !== 'playing' || player.skillTimer > 0) return false;
+          const role = this.role;
+          player.skillTimer = role.skillDelay * player.skillFactor;
+          if (this.roleKey === 'assassin') {
+            const target = this.closestEnemy(255);
+            const aim = target ? Math.atan2(target.y - player.y, target.x - player.x) : player.angle;
+            const direction = movement.x || movement.y ? movement : { x: Math.cos(aim), y: Math.sin(aim) };
+            const startX = player.x;
+            const startY = player.y;
+            for (let traveled = 0; traveled < 182; traveled += 14) {
+              const stride = Math.min(14, 182 - traveled);
+              const x = clamp(player.x + direction.x * stride, WALL.left + player.radius, WALL.right - player.radius);
+              const y = clamp(player.y + direction.y * stride, WALL.top + player.radius, WALL.bottom - player.radius);
+              if (!clearGround(x, y, player.radius)) break;
+              player.x = x;
+              player.y = y;
+            }
+            player.invulnerable = Math.max(player.invulnerable, 0.42);
+            player.angle = Math.atan2(direction.y, direction.x);
+            player.face = direction.x < 0 ? -1 : 1;
+            this.effect('dash', { x: startX, y: startY, endX: player.x, endY: player.y, color: role.color }, 0.45);
+            this.burst(player.x, player.y, role.color, 16);
+            for (const enemy of this.enemies) {
+              if (segmentDistanceSquared(enemy.x, enemy.y, startX, startY, player.x, player.y) <= (43 + enemy.radius) ** 2) {
+                this.hitEnemy(enemy, 64 * player.power, startX, startY, 180);
+              }
+            }
+          } else if (this.roleKey === 'mage') {
+            const target = this.closestEnemy(335) || player;
+            this.areaHit(target.x, target.y, 130, 61 * player.power, role.color);
+          } else {
+            player.shield = 2.8;
+            this.areaHit(player.x, player.y, 123, 53 * player.power, role.color);
+          }
+          this.events.push('skill');
+          return true;
+        }
+
+        enemyAttack(enemy) {
+          const player = this.player;
+          const { spec } = enemy;
+          enemy.cooldown = spec.recovery * this.difficulty.recovery;
+          if (enemy.kind === 'caster') {
+            this.fire('enemy', enemy.x, enemy.y, enemy.attackAngle, 191, enemy.damage, '#ffa27c', 6, 4.1);
+          } else if (enemy.kind === 'warden') {
+            this.effect('ring', { x: enemy.x, y: enemy.y, radius: 114, color: '#f58bad' }, 0.49);
+            for (let index = 0; index < 10; index++) {
+              const angle = enemy.attackAngle + index * TAU / 10;
+              this.fire('enemy', enemy.x + Math.cos(angle) * 32, enemy.y + Math.sin(angle) * 32, angle, 162, enemy.damage, '#f58bad', 7, 4.7);
+            }
+            if (distance(player, enemy) <= 112) this.hurtPlayer(enemy.damage);
+          } else {
+            this.effect('ring', { x: enemy.x, y: enemy.y, radius: spec.reach + 8, color: '#f18c9f' }, 0.24);
+            if (distance(player, enemy) <= spec.reach + 8) this.hurtPlayer(enemy.damage);
+          }
+        }
+
+        updateEnemies(dt) {
+          const player = this.player;
+          for (const enemy of this.enemies) {
+            if (enemy.health <= 0) continue;
+            enemy.spawning = Math.max(0, enemy.spawning - dt);
+            if (enemy.spawning > 0) continue;
+            enemy.hurt = Math.max(0, enemy.hurt - dt);
+            enemy.cooldown = Math.max(0, enemy.cooldown - dt);
+            const range = distance(player, enemy);
+            const direction = vector(player.x - enemy.x, player.y - enemy.y);
+            enemy.face = direction.x < 0 ? -1 : 1;
+            let move = 0;
+            if (enemy.windup > 0) {
+              enemy.windup = Math.max(0, enemy.windup - dt);
+              if (enemy.windup === 0) this.enemyAttack(enemy);
+            } else if (range <= enemy.spec.reach && enemy.cooldown === 0) {
+              enemy.windup = enemy.spec.windup;
+              enemy.attackAngle = Math.atan2(direction.y, direction.x);
+            } else if (enemy.kind === 'caster') {
+              if (range > 216) move = 1;
+              if (range < 112) move = -0.75;
+            } else if (range > (enemy.kind === 'warden' ? 79 : enemy.spec.reach - 9)) {
+              move = 1;
+            }
+            if (this.mode !== 'playing') return;
+            const heading = move ? steer(enemy, { x: direction.x * Math.sign(move), y: direction.y * Math.sign(move) }) : direction;
+            const wading = inRiver(enemy.x, enemy.y) ? 0.74 : 1;
+            const speed = enemy.speed * Math.abs(move) * wading * (enemy.hurt > 0 ? 0.58 : 1);
+            moveActor(enemy, (heading.x * speed + enemy.pushX) * dt, (heading.y * speed + enemy.pushY) * dt);
+            const friction = Math.exp(-8 * dt);
+            enemy.pushX *= friction;
+            enemy.pushY *= friction;
+          }
+
+          // Pisahkan monster yang berimpitan agar serangan mereka terbaca.
+          for (let index = 0; index < this.enemies.length; index++) {
+            const first = this.enemies[index];
+            if (first.health <= 0 || first.spawning > 0) continue;
+            for (let other = index + 1; other < this.enemies.length; other++) {
+              const second = this.enemies[other];
+              if (second.health <= 0 || second.spawning > 0) continue;
+              const minimum = (first.radius + second.radius) * 0.79;
+              const range = distance(first, second);
+              if (range >= minimum) continue;
+              const axis = range > 0 ? vector(second.x - first.x, second.y - first.y) : { x: 1, y: 0 };
+              const shift = (minimum - range) * Math.min(0.45, dt * 8);
+              moveActor(first, -axis.x * shift, -axis.y * shift);
+              moveActor(second, axis.x * shift, axis.y * shift);
+            }
+          }
+        }
+
+        updateBolts(dt) {
+          const player = this.player;
+          this.bolts = this.bolts.filter(bolt => {
+            if (this.mode !== 'playing') return false;
+            const startX = bolt.x;
+            const startY = bolt.y;
+            bolt.x += bolt.vx * dt;
+            bolt.y += bolt.vy * dt;
+            bolt.life -= dt;
+            if (bolt.life <= 0 || bolt.x < 0 || bolt.x > WIDTH || bolt.y < 0 || bolt.y > HEIGHT) return false;
+            if (bolt.team === 'enemy') {
+              if (segmentDistanceSquared(player.x, player.y, startX, startY, bolt.x, bolt.y) <= (player.radius + bolt.radius) ** 2) {
+                this.hurtPlayer(bolt.damage);
+                return false;
+              }
+            } else {
+              const enemy = this.enemies.find(candidate => candidate.health > 0 && candidate.spawning === 0 && segmentDistanceSquared(candidate.x, candidate.y, startX, startY, bolt.x, bolt.y) <= (candidate.radius + bolt.radius) ** 2);
+              if (enemy) { this.hitEnemy(enemy, bolt.damage, startX, startY, 65); return false; }
+            }
+            return true;
+          });
+        }
+
+        updateEffects(dt) {
+          this.effects = this.effects.filter(effect => {
+            effect.life -= dt;
+            if (effect.type === 'particle') { effect.x += effect.vx * dt; effect.y += effect.vy * dt; }
+            if (effect.type === 'label') effect.y -= 26 * dt;
+            return effect.life > 0;
+          });
+        }
+
+        updatePickups(dt) {
+          const player = this.player;
+          this.pickups = this.pickups.filter(pickup => {
+            pickup.life -= dt;
+            if (pickup.life <= 0) return false;
+            const range = distance(pickup, player);
+            if (pickup.type === 'amber' && range < 93 && range > 28) {
+              const direction = vector(player.x - pickup.x, player.y - pickup.y);
+              pickup.x += direction.x * 226 * dt;
+              pickup.y += direction.y * 226 * dt;
+            }
+            if (range > 28) return true;
+            if (pickup.type === 'herb') {
+              if (player.health === player.maxHealth) return true;
+              const healed = Math.min(26, player.maxHealth - player.health);
+              player.health += healed;
+              this.label(`+${healed} HP`, player.x, player.y - 40, '#c1ef9d');
+            } else {
+              this.amber++;
+              this.score += 15;
+              this.label('+15', player.x, player.y - 39, '#f7df99');
+            }
+            this.events.push('pickup');
+            return false;
+          });
+        }
+
+        step(dt, command) {
+          if (this.mode !== 'playing') return;
+          dt = clamp(dt, 0, 0.034);
+          this.time += dt;
+          this.waveTime += dt;
+          const player = this.player;
+          for (const timer of ['attackTimer', 'skillTimer', 'defenseTimer', 'guard', 'invulnerable', 'shield', 'hurtFlash']) player[timer] = Math.max(0, player[timer] - dt);
+          this.updateEffects(dt);
+          this.spawnTimer -= dt;
+          if (this.pending.length && this.spawnTimer <= 0) {
+            this.spawn(this.pending.shift());
+            this.spawnTimer = Math.max(0.36, 0.64 - this.wave * 0.014) * this.difficulty.spawnGap;
+          }
+
+          const movement = vector(command.x, command.y);
+          player.aim = command.aim || null;
+          player.moving = !!(movement.x || movement.y);
+          if (player.moving) {
+            player.angle = Math.atan2(movement.y, movement.x);
+            if (movement.x) player.face = movement.x < 0 ? -1 : 1;
+            const strength = Math.min(1, Math.hypot(command.x, command.y));
+            const wading = inRiver(player.x, player.y) ? 0.63 : 1;
+            const step = player.speed * strength * wading * dt;
+            moveActor(player, movement.x * step, movement.y * step);
+          }
+          if (command.interact) this.activateAltar();
+          if (command.defense) this.defend();
+          if (command.skill) this.skill(movement);
+          if (command.attack) this.attack(player.aim);
+          this.updateEnemies(dt);
+          this.updateBolts(dt);
+          if (this.mode === 'playing') this.updatePickups(dt);
+          this.enemies = this.enemies.filter(enemy => enemy.health > 0);
+          if (this.mode === 'playing' && this.pending.length === 0 && this.enemies.length === 0) {
+            this.lastBonus = this.wave * 40;
+            this.score += this.lastBonus;
+            this.mode = 'upgrade';
+            this.events.push('clear');
+          }
+        }
+      }
+
+      return { WIDTH, HEIGHT, VIEW_WIDTH, VIEW_HEIGHT, WALL, START, ALTARS, PATHS, BRIDGES, PROPS, RIVER_HALF_WIDTH, riverX, inRiver, TAU, clamp, roles, difficulties, Run };
+    })();
+    // ENGINE_END
+    // RENDERER_START
+    const ArenaPainter = (() => {
+      'use strict';
+      const { WIDTH, HEIGHT, VIEW_WIDTH, VIEW_HEIGHT, START, ALTARS, PATHS, BRIDGES, PROPS, RIVER_HALF_WIDTH, riverX, TAU, clamp, roles } = Runeveil;
+
+      function shape(ctx, points, color) {
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.moveTo(points[0][0], points[0][1]);
+        for (let index = 1; index < points.length; index++) ctx.lineTo(points[index][0], points[index][1]);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      function circle(ctx, x, y, radius, color) {
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, TAU);
+        ctx.fill();
+      }
+
+      function outline(ctx, x, y, radius, color, width = 1) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width;
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, TAU);
+        ctx.stroke();
+      }
+
+      function glow(ctx, x, y, radius, color, strength = 1) {
+        const gradient = ctx.createRadialGradient(x, y, 1, x, y, radius);
+        gradient.addColorStop(0, color);
+        gradient.addColorStop(1, 'transparent');
+        ctx.save();
+        ctx.globalAlpha *= strength;
+        ctx.fillStyle = gradient;
+        ctx.fillRect(x - radius, y - radius, radius * 2, radius * 2);
+        ctx.restore();
+      }
+
+      function terrainTexture() {
+        const image = document.createElement('canvas');
+        image.width = Math.round(WIDTH * 0.72);
+        image.height = Math.round(HEIGHT * 0.72);
+        const ctx = image.getContext('2d');
+        ctx.scale(image.width / WIDTH, image.height / HEIGHT);
+        let seed = 91477;
+        const random = () => {
+          seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+          return seed / 4294967296;
+        };
+
+        const meadow = ctx.createLinearGradient(0, 0, WIDTH, HEIGHT);
+        meadow.addColorStop(0, '#bcdb9d');
+        meadow.addColorStop(0.56, '#a7cd84');
+        meadow.addColorStop(1, '#c8de97');
+        ctx.fillStyle = meadow;
+        ctx.fillRect(0, 0, WIDTH, HEIGHT);
+
+        for (let index = 0; index < 1120; index++) {
+          const x = random() * WIDTH;
+          const y = random() * HEIGHT;
+          ctx.fillStyle = ['#edf0aa39', '#649e5930', '#88b56125', '#f4f1ba38'][index % 4];
+          ctx.beginPath();
+          ctx.ellipse(x, y, 13 + random() * 58, 9 + random() * 27, random() * Math.PI, 0, TAU);
+          ctx.fill();
+        }
+        for (let index = 0; index < 3600; index++) {
+          const x = random() * WIDTH;
+          const y = random() * HEIGHT;
+          ctx.strokeStyle = index % 4 === 0 ? '#5f95556c' : '#81aa5960';
+          ctx.lineWidth = 1.3;
+          ctx.beginPath();
+          ctx.moveTo(x - 3, y - 3);
+          ctx.lineTo(x, y);
+          ctx.lineTo(x + 2, y - 5);
+          ctx.stroke();
+          if (index % 19 === 0) {
+            circle(ctx, x + 4, y - 6, 2.3, index % 2 ? '#f8e79a' : '#f8f5d5');
+            circle(ctx, x + 4, y - 6, 0.9, '#e2ad5b');
+          }
+        }
+
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        for (const path of PATHS) {
+          ctx.beginPath();
+          ctx.moveTo(path[0][0], path[0][1]);
+          for (const [x, y] of path.slice(1)) ctx.lineTo(x, y);
+          ctx.strokeStyle = '#a0b775';
+          ctx.lineWidth = 57;
+          ctx.stroke();
+          ctx.strokeStyle = '#ddd3a2';
+          ctx.lineWidth = 47;
+          ctx.stroke();
+          ctx.strokeStyle = '#ecdfb8a8';
+          ctx.lineWidth = 28;
+          ctx.stroke();
+        }
+        for (const altar of ALTARS) {
+          circle(ctx, altar.x, altar.y, 62, '#dad4a0');
+          circle(ctx, altar.x, altar.y, 52, '#ece3b9');
+          outline(ctx, altar.x, altar.y, 47, '#a9a1709c', 2);
+          for (let index = 0; index < 12; index++) {
+            const angle = index * TAU / 12;
+            circle(ctx, altar.x + Math.cos(angle) * 55, altar.y + Math.sin(angle) * 55, 3, '#aab083');
+          }
+        }
+
+        ctx.beginPath();
+        ctx.moveTo(riverX(-100), -100);
+        for (let y = -100; y <= HEIGHT + 100; y += 12) ctx.lineTo(riverX(y), y);
+        ctx.strokeStyle = '#8aaa79';
+        ctx.lineWidth = RIVER_HALF_WIDTH * 2 + 24;
+        ctx.stroke();
+        ctx.strokeStyle = '#76b9ad';
+        ctx.lineWidth = RIVER_HALF_WIDTH * 2 + 5;
+        ctx.stroke();
+        ctx.strokeStyle = '#8ccdc5';
+        ctx.lineWidth = RIVER_HALF_WIDTH * 2 - 18;
+        ctx.stroke();
+        ctx.strokeStyle = '#a6dfd4';
+        ctx.lineWidth = RIVER_HALF_WIDTH * 2 - 53;
+        ctx.stroke();
+        for (let index = 0; index < 265; index++) {
+          const y = random() * HEIGHT;
+          const x = riverX(y) + (random() - 0.5) * RIVER_HALF_WIDTH * 1.55;
+          ctx.strokeStyle = index % 3 ? '#eafcf39a' : '#5eaaa17a';
+          ctx.lineWidth = index % 3 ? 1.8 : 1.2;
+          ctx.beginPath();
+          ctx.moveTo(x - 7, y);
+          ctx.quadraticCurveTo(x + 2, y - 3, x + 13, y + 1);
+          ctx.stroke();
+        }
+        for (const y of BRIDGES) {
+          const x = riverX(y);
+          const length = RIVER_HALF_WIDTH * 2 + 61;
+          const left = x - length / 2;
+          const plankWidth = (length - 4) / 18;
+          ctx.fillStyle = '#5a766252';
+          ctx.fillRect(left + 3, y - 24, length + 4, 64);
+          ctx.fillStyle = '#8a704b';
+          ctx.fillRect(left, y - 29, length, 58);
+          for (let plank = 0; plank < 18; plank++) {
+            ctx.fillStyle = plank % 3 === 0 ? '#c4a270' : '#d5b786';
+            ctx.fillRect(left + 2 + plank * plankWidth, y - 25, plankWidth - 2, 50);
+            ctx.fillStyle = '#f2dbac80';
+            ctx.fillRect(left + 3 + plank * plankWidth, y - 24, 2, 48);
+          }
+          ctx.fillStyle = '#765d42';
+          ctx.fillRect(left, y - 29, length, 5);
+          ctx.fillRect(left, y + 24, length, 5);
+        }
+        for (const [x, y, radius] of [[420, 380, 320], [2650, 522, 420], [921, 1430, 275], [2840, 1530, 385]]) {
+          glow(ctx, x, y, radius, '#fff4b15c');
+        }
+        return image;
+      }
+
+      function forestProp(ctx, prop, player) {
+        const crown = prop.crown;
+        const tall = prop.type !== 'rock';
+        const partlyCovering = tall && Math.abs(player.x - prop.x) < crown && player.y < prop.y && player.y > prop.y - crown * 2.1;
+        shadow(ctx, prop.x + 10, prop.y, tall ? crown * 0.94 : prop.radius, 0.24);
+        ctx.save();
+        ctx.translate(prop.x, prop.y);
+        if (partlyCovering) ctx.globalAlpha = 0.55;
+        if (prop.type === 'rock') {
+          const size = prop.radius;
+          shape(ctx, [[-size, 4], [-size * 0.78, -size * 0.63], [-size * 0.26, -size], [size * 0.55, -size * 0.88], [size, -size * 0.29], [size * 0.84, 5], [2, 12]], '#7f8f75');
+          shape(ctx, [[-size * 0.82, -size * 0.31], [-size * 0.24, -size * 0.87], [size * 0.53, -size * 0.77], [size * 0.72, -size * 0.33], [0, -size * 0.11]], '#b5bea0');
+          shape(ctx, [[-size * 0.7, -size * 0.32], [-size * 0.33, -size * 0.7], [-size * 0.05, -size * 0.49], [-size * 0.32, -size * 0.23]], '#91ad62');
+        } else if (prop.type === 'palm') {
+          const height = crown * 1.56;
+          shape(ctx, [[-8, 7], [7, 7], [11, -height * 0.61], [2, -height], [-8, -height + 3], [-3, -height * 0.55]], '#806945');
+          shape(ctx, [[-6, 5], [-2, 5], [4, -height * 0.59], [-1, -height + 2], [-5, -height + 3], [0, -height * 0.58]], '#ae8958');
+          ctx.translate(-1, -height);
+          for (let leaf = 0; leaf < 7; leaf++) {
+            ctx.save();
+            ctx.rotate(leaf * TAU / 7 + prop.variation);
+            shape(ctx, [[0, 0], [crown * 0.5, -12], [crown * 1.17, -3], [crown * 1.37, 10], [crown * 0.77, 5], [crown * 0.42, 9]], leaf % 2 ? '#4f8b4e' : '#6ca450');
+            shape(ctx, [[0, 0], [crown * 0.53, -4], [crown * 1.17, 1], [crown * 0.59, 2]], '#a4c976ab');
+            ctx.restore();
+          }
+          circle(ctx, 0, 0, 7, '#a2bc61');
+        } else {
+          const height = crown * 1.33;
+          shape(ctx, [[-10, 7], [10, 7], [7, -height], [-7, -height]], '#746649');
+          shape(ctx, [[-6, 5], [-1, 5], [1, -height + 5], [-5, -height + 5]], '#a68b5a');
+          const base = prop.variation > 0.46 ? '#4c884d' : '#5a914e';
+          const rim = prop.variation > 0.46 ? '#3f7548' : '#53854a';
+          circle(ctx, 0, -height, crown, rim);
+          circle(ctx, -crown * 0.55, -height + 3, crown * 0.66, base);
+          circle(ctx, crown * 0.5, -height + 5, crown * 0.67, base);
+          circle(ctx, -crown * 0.24, -height - crown * 0.42, crown * 0.65, '#73a85b');
+          circle(ctx, crown * 0.24, -height - crown * 0.21, crown * 0.64, '#82b260');
+          circle(ctx, -crown * 0.39, -height - crown * 0.46, crown * 0.39, '#a5c975a6');
+          for (let index = 0; index < 4; index++) {
+            circle(ctx, -crown * 0.57 + index * crown * 0.26, -height - crown * (0.16 + (index % 2) * 0.34), 2.6, '#d9e9a97d');
+          }
+        }
+        ctx.restore();
+      }
+
+      function drawAltar(ctx, altar, visited, time) {
+        const { x, y, color } = altar;
+        shadow(ctx, x, y, 28, 0.28);
+        const halo = 30 + Math.sin(time * 2.2) * 3;
+        if (!visited) glow(ctx, x, y - 8, 77, '#ffefac86');
+        outline(ctx, x, y, halo, visited ? '#4e914d99' : '#ad862f9d', 2);
+        shape(ctx, [[x - 24, y + 5], [x - 19, y - 6], [x + 19, y - 6], [x + 24, y + 5], [x + 20, y + 11], [x - 20, y + 11]], '#888568');
+        shape(ctx, [[x - 20, y + 4], [x - 15, y - 6], [x + 15, y - 6], [x + 20, y + 4]], '#c5c4a2');
+        shape(ctx, [[x - 10, y], [x - 10, y - 23], [x, y - 33], [x + 10, y - 23], [x + 10, y]], '#6e7c62');
+        shape(ctx, [[x, y - 31], [x + 7, y - 21], [x, y - 10], [x - 7, y - 21]], visited ? '#a8d589' : color);
+        ctx.font = '700 11px system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = '#fffdeb';
+        ctx.fillStyle = '#315237';
+        ctx.strokeText(altar.name, x, y + 31);
+        ctx.fillText(altar.name, x, y + 31);
+      }
+
+      function drawPickup(ctx, pickup, time) {
+        const y = pickup.y - 7 + Math.sin(time * 6 + pickup.x * 0.13) * 2;
+        const herb = pickup.type === 'herb';
+        shadow(ctx, pickup.x, pickup.y - 4, 7, 0.24);
+        if (herb) {
+          circle(ctx, pickup.x, y, 8, '#f6ffe2');
+          shape(ctx, [[pickup.x - 4, y + 4], [pickup.x - 4, y - 3], [pickup.x + 5, y - 6], [pickup.x + 5, y + 1]], '#4c9957');
+        } else {
+          shape(ctx, [[pickup.x, y - 9], [pickup.x + 6, y - 1], [pickup.x, y + 7], [pickup.x - 6, y - 1]], '#a67632');
+          shape(ctx, [[pickup.x, y - 7], [pickup.x + 4, y - 1], [pickup.x, y + 3], [pickup.x - 4, y - 1]], '#ffe3a0');
+        }
+      }
+
+      function shadow(ctx, x, y, radius, alpha = 0.44) {
+        ctx.fillStyle = `rgba(39, 66, 34, ${alpha})`;
+        ctx.beginPath();
+        ctx.ellipse(x, y + 8, radius, radius * 0.37, 0, 0, TAU);
+        ctx.fill();
+      }
+
+      function material(ctx, x, y, endX, endY, light, middle, dark) {
+        const gradient = ctx.createLinearGradient(x, y, endX, endY);
+        gradient.addColorStop(0, light);
+        gradient.addColorStop(0.52, middle);
+        gradient.addColorStop(1, dark);
+        return gradient;
+      }
+
+      function edged(ctx, points, fill, edge = '#253638', width = 2) {
+        shape(ctx, points, fill);
+        ctx.strokeStyle = edge;
+        ctx.lineWidth = width;
+        ctx.lineJoin = 'round';
+        ctx.stroke();
+      }
+
+      function roundBox(ctx, x, y, width, height, radius, fill, edge = null, thickness = 1.5) {
+        if (width <= 0 || height <= 0) return;
+        const r = Math.min(radius, width / 2, height / 2);
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.arcTo(x + width, y, x + width, y + height, r);
+        ctx.arcTo(x + width, y + height, x, y + height, r);
+        ctx.arcTo(x, y + height, x, y, r);
+        ctx.arcTo(x, y, x + width, y, r);
+        ctx.closePath();
+        ctx.fillStyle = fill;
+        ctx.fill();
+        if (edge) {
+          ctx.strokeStyle = edge;
+          ctx.lineWidth = thickness;
+          ctx.stroke();
+        }
+      }
+
+      function oval(ctx, x, y, radiusX, radiusY, fill, edge = null) {
+        ctx.beginPath();
+        ctx.ellipse(x, y, radiusX, radiusY, 0, 0, TAU);
+        ctx.fillStyle = fill;
+        ctx.fill();
+        if (edge) {
+          ctx.strokeStyle = edge;
+          ctx.lineWidth = 1.8;
+          ctx.stroke();
+        }
+      }
+
+      function sword(ctx, x, y, angle, long, glowColor) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(angle);
+        const tip = long ? -31 : -22;
+        const steel = material(ctx, -6, tip, 7, 2, '#f4fff9', '#c9e7e6', '#688c9a');
+        edged(ctx, [[-5, 2], [-5, tip + 9], [0, tip], [6, tip + 8], [5, 2]], steel, '#315361', 1.8);
+        shape(ctx, [[-1, tip + 5], [1, tip + 8], [1, 1], [-1, 1]], '#ffffffb8');
+        roundBox(ctx, -9, 1, 18, 5, 2, glowColor, '#345352');
+        roundBox(ctx, -2.5, 5, 5, 8, 2, '#3e514c', '#283c3a');
+        ctx.restore();
+      }
+
+      function assassinArt(ctx, stride, swing) {
+        const cloth = material(ctx, -24, -61, 20, 10, '#70a6a0', '#386b69', '#15343b');
+        edged(ctx, [[-12, -38], [13, -38], [20, -8], [17 + stride, 10], [1, 5], [-17, 12], [-19, -9]], cloth, '#233e43');
+        edged(ctx, [[-18, -31], [-23, -44], [-16, -59], [-3, -66], [12, -62], [22, -52], [23, -35], [16, -23], [-14, -23]], cloth, '#1d363e', 2.5);
+        roundBox(ctx, -15, -48, 32, 22, 9, material(ctx, -12, -49, 14, -26, '#214750', '#18343d', '#14232f'), '#203d44');
+        shape(ctx, [[-18, -48], [-12, -58], [0, -62], [-6, -54], [-13, -46]], '#c9eee873');
+        roundBox(ctx, -10, -42, 9, 4, 2, '#b6ffe9');
+        roundBox(ctx, 5, -42, 9, 4, 2, '#b6ffe9');
+        edged(ctx, [[-16, -27], [18, -28], [11, -22], [-8, -19], [-27 - stride, -22], [-31 - stride, -28]], '#6cd7b8', '#326e65', 1.6);
+        roundBox(ctx, -11, -11, 24, 5, 2, '#29434b');
+        roundBox(ctx, -2, -12, 7, 6, 2, '#c6eebc');
+        sword(ctx, -18, 1, -1.03 - swing * .36, false, '#78c9b3');
+        sword(ctx, 18, -3, .7 + swing * .77, false, '#8be6c8');
+      }
+
+      function mageArt(ctx, stride) {
+        const robe = material(ctx, -20, -46, 19, 11, '#b993e3', '#7459a7', '#483b76');
+        edged(ctx, [[-14, -40], [15, -40], [19, -15], [23, 9], [4, 12], [-19 + stride, 10], [-21, -7]], robe, '#433762');
+        edged(ctx, [[-15, -31], [-4, -32], [1, -18], [9, -31], [19, -29], [12, -18], [1, -14], [-10, -18]], '#bd9beb', '#654a90', 1.5);
+        roundBox(ctx, -12, -53, 26, 24, 10, material(ctx, -11, -55, 13, -29, '#fff0bf', '#e8bd94', '#aa7580'), '#674c6b');
+        circle(ctx, -5, -42, 2.5, '#3b314d');
+        circle(ctx, 8, -42, 2.5, '#3b314d');
+        circle(ctx, -5.5, -43, .75, '#fffef0');
+        circle(ctx, 7.5, -43, .75, '#fffef0');
+        const hat = material(ctx, -20, -78, 24, -42, '#c8a8f4', '#8567c0', '#594583');
+        edged(ctx, [[-16, -49], [-9, -59], [-6, -74], [2, -82], [11, -73], [14, -60], [20, -49]], hat, '#514274');
+        oval(ctx, 1, -51, 26, 6, hat, '#514274');
+        roundBox(ctx, -13, -58, 27, 4, 2, '#f0cd8c');
+        edged(ctx, [[-1, -61], [5, -57], [2, -52], [-3, -56]], '#f6e4ff', '#8e6cbe', 1.2);
+        roundBox(ctx, 20, -29, 5, 44, 2, '#b38a60', '#6d5549');
+        const gem = material(ctx, 18, -46, 32, -26, '#fff7ff', '#d8b9ff', '#8f65c3');
+        edged(ctx, [[24, -48], [34, -38], [24, -26], [14, -38]], gem, '#7554a3');
+        shape(ctx, [[24, -44], [29, -38], [24, -31], [20, -38]], '#fff5ff');
+      }
+
+      function knightArt(ctx, swing) {
+        const metal = material(ctx, -21, -63, 22, -21, '#fff0ba', '#d7ad65', '#96693c');
+        const tunic = material(ctx, -20, -35, 19, 12, '#719cb3', '#436e8f', '#304968');
+        edged(ctx, [[-16, -36], [16, -36], [20, 0], [13, 11], [-13, 10], [-19, 1]], tunic, '#30465c');
+        oval(ctx, -17, -22, 10, 9, metal, '#73542e');
+        oval(ctx, 17, -22, 10, 9, metal, '#73542e');
+        roundBox(ctx, -20, -61, 41, 39, 13, metal, '#755635', 2.3);
+        edged(ctx, [[-10, -61], [-5, -70], [2, -73], [11, -70], [13, -63], [7, -60]], '#b9664c', '#794c35', 1.6);
+        roundBox(ctx, -16, -48, 32, 10, 5, material(ctx, -12, -48, 14, -38, '#545a5d', '#2f4148', '#27333b'), '#8d6a44');
+        roundBox(ctx, -8, -46, 20, 2.7, 1.2, '#fff1b0');
+        shape(ctx, [[-17, -52], [-12, -58], [5, -59], [-1, -55], [-12, -53]], '#fff3c8b8');
+        const shield = material(ctx, -31, -22, -4, 10, '#f7dfa6', '#d7a86c', '#9e6e45');
+        edged(ctx, [[-29, -18], [-17, -22], [-7, -18], [-7, -3], [-18, 11], [-29, 3]], shield, '#79583e');
+        edged(ctx, [[-24, -14], [-17, -17], [-11, -14], [-11, -3], [-18, 5], [-24, 0]], '#6e9eac', '#8a7350', 1.2);
+        shape(ctx, [[-18, -14], [-14, -8], [-18, -2], [-21, -8]], '#e3efbc');
+        sword(ctx, 21, -1, .49 + swing * .79, true, '#e6c386');
+      }
+
+      function hero(ctx, player, roleKey, time) {
+        const role = roles[roleKey];
+        const stride = player.moving ? Math.sin(time * 21) * 4 : 0;
+        const bob = Math.sin(time * (player.moving ? 20 : 4)) * (player.moving ? 2 : .8);
+        const swing = Math.sin((1 - clamp((player.attackTimer || 0) / role.attackDelay, 0, 1)) * Math.PI);
+        shadow(ctx, player.x + 8, player.y + 3, 25, .28);
+        oval(ctx, player.x, player.y + 10, 25, 9, role.color + '52', role.ink + 'a8');
+        if (player.guard > 0 || player.shield > 0) {
+          const guarding = player.guard > 0;
+          oval(ctx, player.x, player.y - 24, 38, 43, guarding ? '#82c9f53b' : '#f6dfa332', guarding ? '#559ad1' : '#c69354');
+          oval(ctx, player.x, player.y - 24, 34, 39, '#ffffff06', guarding ? '#e6f7ffb0' : '#fff7c6ae');
+        }
+        ctx.save();
+        ctx.translate(player.x, player.y + bob);
+        ctx.scale(player.face, player.health <= 0 ? 0.42 : 1);
+        if (player.health <= 0) ctx.globalAlpha = .56;
+        else if (player.hurtFlash > 0) ctx.globalAlpha = .8;
+        const boots = material(ctx, -14, -7, 14, 14, '#50646a', '#334c55', '#24343e');
+        roundBox(ctx, -14, -1 + stride * .55, 12, 14, 4, boots, '#293c42');
+        roundBox(ctx, 3, -1 - stride * .55, 12, 14, 4, boots, '#293c42');
+        if (roleKey === 'assassin') assassinArt(ctx, stride, swing);
+        else if (roleKey === 'mage') mageArt(ctx, stride);
+        else knightArt(ctx, swing);
+        ctx.restore();
+      }
+
+      function paintMonster(ctx, kind, hit) {
+        if (kind === 'slime') {
+          const body = material(ctx, -21, -34, 22, 12, hit ? '#c9f9d4' : '#a2dcb1', '#59ad88', '#337761');
+          oval(ctx, 0, -9, 25, 22, body, '#315a50');
+          oval(ctx, -7, -21, 12, 6, '#d8f5b99c');
+          oval(ctx, -9, -10, 5.5, 7, '#f6ffe3', '#356b60');
+          oval(ctx, 8, -10, 5.5, 7, '#f6ffe3', '#356b60');
+          circle(ctx, -7, -9, 2.8, '#284c4e');
+          circle(ctx, 10, -9, 2.8, '#284c4e');
+          roundBox(ctx, -4, 0, 9, 4, 2, '#28594e');
+        } else if (kind === 'wisp') {
+          const body = material(ctx, -19, -42, 21, 11, hit ? '#efd9ff' : '#c4a0ee', '#986dd0', '#6443a2');
+          edged(ctx, [[-23, -9], [-18, -25], [-7, -40], [0, -36], [15, -39], [23, -20], [23, -5], [18, 10], [6, 5], [-1, 15], [-9, 5], [-22, 9]], body, '#5d478c', 2.2);
+          oval(ctx, 1, -16, 16, 11, '#4b3977');
+          roundBox(ctx, -9, -20, 6, 6, 2.2, '#f6e5ff');
+          roundBox(ctx, 7, -20, 6, 6, 2.2, '#f6e5ff');
+          oval(ctx, -8, -28, 7, 3, '#f4dcff83');
+        } else if (kind === 'caster') {
+          const coat = material(ctx, -21, -51, 20, 13, hit ? '#f5c49e' : '#dc9273', '#ac6355', '#693e49');
+          edged(ctx, [[-18, -29], [15, -29], [21, -6], [24, 12], [-23, 12], [-23, -4]], coat, '#603f46');
+          edged(ctx, [[-20, -27], [-19, -42], [-5, -56], [9, -52], [20, -37], [19, -25]], coat, '#603f46');
+          roundBox(ctx, -12, -40, 25, 19, 7, '#482f42', '#704547');
+          roundBox(ctx, -7, -34, 6, 4, 2, '#ffd091');
+          roundBox(ctx, 5, -34, 6, 4, 2, '#ffd091');
+          roundBox(ctx, 24, -32, 4, 45, 2, '#b48559', '#785441');
+          oval(ctx, 26, -36, 8, 8, '#f7ad75', '#ad624c');
+          oval(ctx, 24, -38, 3, 3, '#ffe3af');
+        } else {
+          const bark = material(ctx, -40, -77, 35, 18, hit ? '#dfc9c4' : '#b99786', '#806375', '#4d475b');
+          edged(ctx, [[-35, -15], [-34, -46], [-21, -54], [20, -54], [34, -43], [38, -14], [30, 11], [10, 18], [-14, 17], [-33, 10]], bark, '#514353', 2.6);
+          oval(ctx, -31, -24, 12, 17, bark, '#594859');
+          oval(ctx, 33, -24, 12, 17, bark, '#594859');
+          edged(ctx, [[-27, -52], [-29, -75], [-18, -69], [-10, -78], [11, -77], [20, -70], [28, -81], [27, -51], [19, -40], [-18, -41]], bark, '#554758', 2.5);
+          roundBox(ctx, -17, -63, 35, 10, 4, '#3e3048', '#765870');
+          roundBox(ctx, -12, -60, 9, 4, 2, '#ffb2d5');
+          roundBox(ctx, 6, -60, 9, 4, 2, '#ffb2d5');
+          const gem = material(ctx, -12, -38, 14, 0, '#fbd7f4', '#c783bd', '#965b9e');
+          edged(ctx, [[0, -40], [15, -22], [0, -2], [-15, -22]], gem, '#604459', 2);
+          shape(ctx, [[0, -35], [6, -22], [0, -9], [-6, -22]], '#f8c7ec');
+          shape(ctx, [[-37, -43], [-27, -52], [-18, -43], [-24, -35]], '#92a976');
+          shape(ctx, [[24, -41], [36, -44], [39, -34], [26, -32]], '#9eb479');
+        }
+      }
+
+      function monsterArtwork() {
+        const sprites = {};
+        for (const kind of ['slime', 'wisp', 'caster', 'warden']) {
+          sprites[kind] = [false, true].map(hit => {
+            const tile = document.createElement('canvas');
+            tile.width = 130;
+            tile.height = 121;
+            const ctx = tile.getContext('2d');
+            ctx.translate(65, 96);
+            paintMonster(ctx, kind, hit);
+            return tile;
+          });
+        }
+        return sprites;
+      }
+
+      function enemySprite(ctx, enemy, time, artwork) {
+        const bob = Math.sin(time * 6 + enemy.phase) * (enemy.kind === 'wisp' ? 5 : 1.5);
+        shadow(ctx, enemy.x + 5, enemy.y + 2, enemy.radius, .28);
+        ctx.save();
+        ctx.translate(enemy.x, enemy.y + bob);
+        ctx.scale(enemy.face, 1);
+        ctx.drawImage(artwork[enemy.kind][enemy.hurt > 0 ? 1 : 0], -65, -96);
+        ctx.restore();
+
+        const isBoss = enemy.kind === 'warden';
+        const width = isBoss ? 89 : 37;
+        const y = enemy.y - (isBoss ? 91 : enemy.kind === 'caster' ? 65 : 46);
+        if (isBoss || enemy.health < enemy.maxHealth) {
+          roundBox(ctx, enemy.x - width / 2, y, width, 5, 2, '#3d4a42');
+          roundBox(ctx, enemy.x - width / 2 + .5, y + .5, Math.max(1, (width - 1) * enemy.health / enemy.maxHealth), 4, 1.8, isBoss ? '#f2a2bf' : '#edb484');
+        }
+        if (isBoss) {
+          ctx.font = '800 11px system-ui, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.lineWidth = 3;
+          ctx.strokeStyle = '#fff9df';
+          ctx.fillStyle = '#7c3f64';
+          ctx.strokeText('BRIAR TITAN', enemy.x, y - 6);
+          ctx.fillText('BRIAR TITAN', enemy.x, y - 6);
+        }
+      }
+
+      function heroPlate(ctx, run, view) {
+        if (view.width * view.scale < 110 || view.height * view.scale < 90) return;
+        const player = run.player;
+        const scale = Math.max(1, .9 / view.scale);
+        let label = `Lv. ${run.level} · ${run.name}`;
+        const clearance = run.roleKey === 'mage' ? 118 : 108;
+        const top = Math.max(view.y + 8 / view.scale, player.y - clearance - (scale - 1) * 21);
+        ctx.save();
+        ctx.font = 'bold 11px sans-serif';
+        const maximum = Math.min(179, (view.width - 10) / scale);
+        const characters = Array.from(label);
+        while (characters.length > 1 && ctx.measureText(label).width > maximum - 15) {
+          characters.pop();
+          label = characters.join('') + '…';
+        }
+        const width = Math.min(Math.max(85, ctx.measureText(label).width + 15), maximum);
+        const inset = width * scale / 2 + 5;
+        ctx.translate(clamp(player.x, view.x + inset, view.x + view.width - inset), top);
+        ctx.scale(scale, scale);
+        roundBox(ctx, -width / 2, 0, width, 31, 7, '#234238f0', '#f5f9de', 1.5);
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#fffdf0';
+        ctx.fillText(label, 0, 11);
+        ctx.textAlign = 'left';
+        ctx.font = 'bold 7px sans-serif';
+        const left = -width / 2 + 20;
+        const span = width - 25;
+        ctx.fillStyle = '#f3f4d9';
+        ctx.fillText('HP', -width / 2 + 4, 20);
+        ctx.fillText('EXP', -width / 2 + 4, 27);
+        roundBox(ctx, left, 15.5, span, 5, 2, '#405950');
+        roundBox(ctx, left, 23, span, 4, 1.8, '#4c575a');
+        if (player.health > 0) roundBox(ctx, left, 15.5, span * player.health / player.maxHealth, 5, 2, player.health / player.maxHealth < .3 ? '#ee8069' : '#a4df78');
+        if (run.xp > 0) roundBox(ctx, left, 23, span * run.xp / run.nextXp, 4, 1.8, '#bd9df7');
+        ctx.restore();
+      }
+
+      function threatArrow(ctx, player, threat) {
+        if (!threat.nearest) return;
+        const angle = Math.atan2(threat.nearest.y - player.y, threat.nearest.x - player.x);
+        ctx.save();
+        ctx.translate(player.x, player.y + 6);
+        ctx.rotate(angle);
+        const color = threat.incoming ? '#b8413a' : '#d27649';
+        edged(ctx, [[49, 0], [35, -8], [39, 0], [35, 8]], color, '#fff4d6', 2);
+        ctx.restore();
+      }
+
+      function aimGuide(ctx, player, reach) {
+        const length = Math.min(218, reach + 32);
+        const startX = player.x + player.aim.x * 31;
+        const startY = player.y + player.aim.y * 31;
+        const endX = player.x + player.aim.x * length;
+        const endY = player.y + player.aim.y * length;
+        ctx.save();
+        ctx.strokeStyle = '#375c4bbb';
+        ctx.lineWidth = 4;
+        ctx.setLineDash([8, 6]);
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(endX, endY);
+        ctx.stroke();
+        ctx.strokeStyle = '#fff8de';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.setLineDash([]);
+        outline(ctx, endX, endY, 10, '#fff8de', 2);
+        ctx.restore();
+      }
+
+      function warnings(ctx, enemy) {
+        if (enemy.spawning > 0) {
+          const radius = enemy.radius + enemy.spawning * 27;
+          glow(ctx, enemy.x, enemy.y, radius * 1.6, '#a474dc58');
+          ctx.save();
+          ctx.setLineDash([5, 5]);
+          outline(ctx, enemy.x, enemy.y, radius, '#ba94f1b0', 2);
+          ctx.restore();
+          shape(ctx, [[enemy.x, enemy.y - 10], [enemy.x + 7, enemy.y], [enemy.x, enemy.y + 10], [enemy.x - 7, enemy.y]], '#d1a4fbbb');
+          return;
+        }
+        if (enemy.windup <= 0) return;
+        const progress = 1 - enemy.windup / enemy.spec.windup;
+        if (enemy.kind === 'caster') {
+          ctx.save();
+          ctx.strokeStyle = '#fbb48b96';
+          ctx.lineWidth = 2;
+          ctx.setLineDash([6, 5]);
+          ctx.beginPath();
+          ctx.moveTo(enemy.x, enemy.y);
+          ctx.lineTo(enemy.x + Math.cos(enemy.attackAngle) * 285, enemy.y + Math.sin(enemy.attackAngle) * 285);
+          ctx.stroke();
+          ctx.restore();
+          glow(ctx, enemy.x, enemy.y, 41, '#ffab7c69', 0.5 + progress * 0.5);
+        } else {
+          const radius = enemy.kind === 'warden' ? 112 : enemy.spec.reach + 8;
+          circle(ctx, enemy.x, enemy.y, radius, '#f17c9b23');
+          outline(ctx, enemy.x, enemy.y, radius, '#f17c9b6b', 1.5);
+          outline(ctx, enemy.x, enemy.y, radius * (0.3 + progress * 0.7), '#f58badad', 2);
+        }
+      }
+
+      function projectile(ctx, bolt) {
+        const angle = Math.atan2(bolt.vy, bolt.vx);
+        ctx.save();
+        ctx.translate(bolt.x, bolt.y);
+        ctx.rotate(angle);
+        glow(ctx, 0, 0, bolt.radius * 3.3, bolt.color + '68');
+        shape(ctx, [[-26, 0], [-7, -5], [8, 0], [-7, 5]], bolt.color + '91');
+        circle(ctx, 0, 0, bolt.radius * 0.67, '#fff1ff');
+        ctx.restore();
+      }
+
+      function animation(ctx, effect) {
+        const alpha = effect.life / effect.duration;
+        const progress = 1 - alpha;
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        if (effect.type === 'particle') {
+          ctx.fillStyle = effect.color;
+          ctx.fillRect(effect.x, effect.y, effect.size, effect.size);
+        } else if (effect.type === 'ring') {
+          const radius = effect.radius * (0.22 + progress * 0.78);
+          outline(ctx, effect.x, effect.y, radius, effect.color, 2 + alpha * 5);
+          outline(ctx, effect.x, effect.y, radius * 0.76, effect.color + '79', 1.5);
+        } else if (effect.type === 'slash') {
+          const radius = effect.radius * (0.72 + progress * 0.28);
+          ctx.strokeStyle = effect.color;
+          ctx.lineWidth = 3 + alpha * 5;
+          ctx.lineCap = 'round';
+          ctx.beginPath();
+          ctx.arc(effect.x, effect.y, radius, effect.angle - effect.arc, effect.angle + effect.arc);
+          ctx.stroke();
+          ctx.strokeStyle = effect.color + '59';
+          ctx.lineWidth = 11;
+          ctx.beginPath();
+          ctx.arc(effect.x, effect.y, radius * 0.84, effect.angle - effect.arc * 0.84, effect.angle + effect.arc * 0.84);
+          ctx.stroke();
+        } else if (effect.type === 'dash') {
+          ctx.strokeStyle = effect.color + '66';
+          ctx.lineWidth = 34 * alpha;
+          ctx.lineCap = 'round';
+          ctx.beginPath();
+          ctx.moveTo(effect.x, effect.y);
+          ctx.lineTo(effect.endX, effect.endY);
+          ctx.stroke();
+          ctx.strokeStyle = effect.color;
+          ctx.lineWidth = 3;
+          ctx.stroke();
+        } else if (effect.type === 'label') {
+          ctx.font = '700 15px ui-monospace, monospace';
+          ctx.textAlign = 'center';
+          ctx.strokeStyle = '#120d1d';
+          ctx.lineWidth = 3;
+          ctx.fillStyle = effect.color;
+          ctx.strokeText(effect.text, effect.x, effect.y);
+          ctx.fillText(effect.text, effect.x, effect.y);
+        }
+        ctx.restore();
+      }
+
+      function indicators(ctx, enemies, x, y, width, height) {
+        let shown = 0;
+        for (const enemy of enemies) {
+          if (enemy.x > x + 14 && enemy.x < x + width - 14 && enemy.y > y + 14 && enemy.y < y + height - 14) continue;
+          if (shown++ >= 5) break;
+          const dx = enemy.x - (x + width / 2);
+          const dy = enemy.y - (y + height / 2);
+          const factor = Math.min((width / 2 - 17) / Math.max(1, Math.abs(dx)), (height / 2 - 17) / Math.max(1, Math.abs(dy)));
+          ctx.save();
+          ctx.translate(x + width / 2 + dx * factor, y + height / 2 + dy * factor);
+          ctx.rotate(Math.atan2(dy, dx));
+          shape(ctx, [[8, 0], [-6, -6], [-3, 0], [-6, 6]], '#a84640d8');
+          ctx.restore();
+        }
+      }
+
+      return class ArenaPainter {
+        constructor(canvas, ctx, mapCanvas) {
+          this.canvas = canvas;
+          this.ctx = ctx;
+          this.terrain = terrainTexture();
+          this.enemyArt = monsterArtwork();
+          this.mapCanvas = mapCanvas;
+          this.mapContext = mapCanvas.getContext('2d');
+          this.mapTexture = document.createElement('canvas');
+          this.mapTexture.width = mapCanvas.width;
+          this.mapTexture.height = mapCanvas.height;
+          const map = this.mapTexture.getContext('2d');
+          map.drawImage(this.terrain, 0, 0, mapCanvas.width, mapCanvas.height);
+          for (const prop of PROPS) {
+            circle(map, prop.x / WIDTH * mapCanvas.width, prop.y / HEIGHT * mapCanvas.height, prop.type === 'rock' ? 1.5 : 2.6, prop.type === 'rock' ? '#8a987f' : '#639753');
+          }
+          this.motion = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          this.resize();
+        }
+
+        resize() {
+          this.dpr = Math.min(window.devicePixelRatio || 1, 2);
+          this.width = Math.max(1, this.canvas.clientWidth);
+          this.height = Math.max(1, this.canvas.clientHeight);
+          this.canvas.width = Math.round(this.width * this.dpr);
+          this.canvas.height = Math.round(this.height * this.dpr);
+        }
+
+        camera(player) {
+          const scale = Math.max(this.width / VIEW_WIDTH, this.height / VIEW_HEIGHT);
+          const width = this.width / scale;
+          const height = this.height / scale;
+          return {
+            scale, width, height,
+            x: clamp(player.x - width / 2, 0, WIDTH - width),
+            y: clamp(player.y - height / 2, 0, HEIGHT - height)
+          };
+        }
+
+        drawMap(run) {
+          if (!this.mapContext) return;
+          const ctx = this.mapContext;
+          const { width, height } = this.mapCanvas;
+          const scaleX = width / WIDTH;
+          const scaleY = height / HEIGHT;
+          const view = this.camera(run.player);
+          ctx.drawImage(this.mapTexture, 0, 0);
+          ctx.strokeStyle = '#ffffeddd';
+          ctx.lineWidth = 1;
+          ctx.strokeRect(view.x * scaleX, view.y * scaleY, view.width * scaleX, view.height * scaleY);
+          for (const enemy of run.enemies) circle(ctx, enemy.x * scaleX, enemy.y * scaleY, enemy.kind === 'warden' ? 3 : 1.9, '#ad524b');
+          for (const altar of ALTARS) {
+            const x = altar.x * scaleX;
+            const y = altar.y * scaleY;
+            const visited = run.visitedAltars.has(altar.id);
+            shape(ctx, [[x, y - 5], [x + 5, y], [x, y + 5], [x - 5, y]], visited ? '#3e7952' : '#94652a');
+            shape(ctx, [[x, y - 3], [x + 3, y], [x, y + 3], [x - 3, y]], visited ? '#c2e5ad' : '#ffe3a2');
+          }
+          circle(ctx, run.player.x * scaleX, run.player.y * scaleY, 4.3, '#fffdf0');
+          circle(ctx, run.player.x * scaleX, run.player.y * scaleY, 2.7, '#305943');
+        }
+
+        draw(run, selectedRole, time) {
+          const ctx = this.ctx;
+          const player = run?.player || { ...START, face: 1, health: 1, shield: 0, moving: false, hurtFlash: 0 };
+          const view = this.camera(player);
+          const { x, y, width: viewWidth, height: viewHeight, scale } = view;
+          const pixels = this.dpr * scale;
+          const visible = (actor, margin = 50) => actor.x >= x - margin && actor.x <= x + viewWidth + margin && actor.y >= y - margin && actor.y <= y + viewHeight + margin;
+          ctx.setTransform(pixels, 0, 0, pixels, -x * pixels, -y * pixels);
+          const terrainX = this.terrain.width / WIDTH;
+          const terrainY = this.terrain.height / HEIGHT;
+          ctx.drawImage(this.terrain, x * terrainX, y * terrainY, viewWidth * terrainX, viewHeight * terrainY, x, y, viewWidth, viewHeight);
+          const breeze = this.motion ? time : 0;
+          for (let index = 0; index < 20; index++) {
+            const pollen = { x: (index * 197 + 33 + breeze * 12) % WIDTH, y: 20 + (index * 103 + Math.sin(breeze * 0.7 + index) * 20 + HEIGHT) % (HEIGHT - 40) };
+            if (visible(pollen, 0)) circle(ctx, pollen.x, pollen.y, index % 4 === 0 ? 2.3 : 1.3, '#fff2b4be');
+          }
+          for (const altar of ALTARS) {
+            if (visible(altar, 90)) drawAltar(ctx, altar, run?.visitedAltars.has(altar.id), breeze);
+          }
+          if (run) {
+            for (const pickup of run.pickups) if (visible(pickup)) drawPickup(ctx, pickup, breeze);
+            for (const enemy of run.enemies) if (visible(enemy, 288)) warnings(ctx, enemy);
+            if (run.mode === 'playing') {
+              threatArrow(ctx, player, run.scanThreats());
+              if (player.aim) aimGuide(ctx, player, run.role.reach);
+            }
+          }
+          const actors = PROPS.filter(prop => visible(prop, 116));
+          if (run) actors.push(...run.enemies.filter(enemy => enemy.spawning === 0 && visible(enemy, 78)));
+          actors.push(player);
+          actors.sort((a, b) => a.y - b.y);
+          const actorTime = this.motion ? run?.time ?? time : 0;
+          for (const actor of actors) {
+            if (actor === player) hero(ctx, player, run?.roleKey ?? selectedRole, actorTime);
+            else if (actor.kind) enemySprite(ctx, actor, actorTime, this.enemyArt);
+            else forestProp(ctx, actor, player);
+          }
+          if (!run) return;
+          if (player.health > 0) heroPlate(ctx, run, view);
+          for (const bolt of run.bolts) if (visible(bolt)) projectile(ctx, bolt);
+          for (const effect of run.effects) if (visible(effect, 200)) animation(ctx, effect);
+          if (run.mode === 'playing') indicators(ctx, run.enemies, x, y, viewWidth, viewHeight);
+          if (run.mode === 'playing' && run.waveTime < 2) this.waveBanner(run);
+        }
+
+        waveBanner(run) {
+          const ctx = this.ctx;
+          ctx.save();
+          ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+          ctx.globalAlpha = clamp((2 - run.waveTime) * 2.8, 0, 1);
+          const width = Math.min(264, this.width - 26);
+          const left = (this.width - width) / 2;
+          const top = this.width < 620 ? 87 : 14;
+          ctx.fillStyle = '#fffef2f0';
+          ctx.fillRect(left, top, width, 43);
+          ctx.strokeStyle = '#86a476';
+          ctx.lineWidth = 1;
+          ctx.strokeRect(left + 0.5, top + 0.5, width - 1, 42);
+          ctx.font = '700 12px ui-monospace, monospace';
+          ctx.textAlign = 'center';
+          ctx.fillStyle = '#355b3b';
+          ctx.fillText(`GELOMBANG ${run.wave} · ${run.difficulty.label.toUpperCase()}`, this.width / 2, top + 17);
+          ctx.font = '10px system-ui, sans-serif';
+          ctx.fillStyle = '#567252';
+          ctx.fillText(run.wave % 5 === 0 ? 'Briar Titan muncul' : 'Monster mulai berdatangan', this.width / 2, top + 32);
+          ctx.restore();
+        }
+      };
+    })();
+    // RENDERER_END
+    // CONTROLLER_START
+    (() => {
+      'use strict';
+      const { roles, difficulties, Run, clamp, ALTARS, inRiver } = Runeveil;
+      const $ = id => document.getElementById(id);
+      const canvas = $('arena');
+      const context = canvas.getContext('2d', { alpha: false });
+      if (!context) {
+        $('canvas-error').hidden = false;
+        $('start-form').querySelector('button[type="submit"]').disabled = true;
+        return;
+      }
+
+      const STORAGE_KEY = 'runeveil-arena-v1';
+      const number = new Intl.NumberFormat('id-ID');
+      const decimal = new Intl.NumberFormat('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+      const painter = new ArenaPainter(canvas, context, $('minimap'));
+      const gameShell = $('game-shell');
+      const joystick = $('joystick');
+      const screens = { menu: $('menu-screen'), paused: $('paused-screen'), upgrade: $('upgrade-screen'), dead: $('dead-screen') };
+      const roleButtons = [...document.querySelectorAll('[data-role]')];
+      const difficultyButtons = [...document.querySelectorAll('[data-difficulty]')];
+      const skillButtons = [...document.querySelectorAll('[data-skill]')];
+      const defenseButtons = [...document.querySelectorAll('[data-defense]')];
+      const holdButtons = [...document.querySelectorAll('[data-hold]')];
+      const interactButtons = [...document.querySelectorAll('[data-interact]')];
+      const altarRows = [...document.querySelectorAll('[data-altar]')];
+      const keyActions = {
+        KeyW: 'up', ArrowUp: 'up', KeyA: 'left', ArrowLeft: 'left',
+        KeyS: 'down', ArrowDown: 'down', KeyD: 'right', ArrowRight: 'right', Space: 'attack'
+      };
+      const keyboard = new Set();
+      const pointers = new Map();
+      const profile = readProfile();
+      let selectedRole = profile.role;
+      let selectedDifficulty = profile.difficulty;
+      let run = null;
+      let shownMode = '';
+      let bestAtStart = profile.records[selectedDifficulty];
+      let attackQueued = false;
+      let skillQueued = false;
+      let defenseQueued = false;
+      let interactQueued = false;
+      let joystickPointer = null;
+      let analogX = 0;
+      let analogY = 0;
+      let fullscreenBusy = false;
+      let audio = null;
+      let lastFrame = performance.now();
+      let lastHUD = 0;
+
+      function readProfile() {
+        const records = { easy: 0, medium: 0, hard: 0, wni: 0 };
+        const fallback = { records, difficulty: 'medium', role: 'knight', name: '', muted: false };
+        try {
+          const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+          if (!data || typeof data !== 'object') return fallback;
+          for (const key of Object.keys(records)) {
+            const previous = data.records?.[key] ?? (key === 'medium' ? data.best : 0);
+            if (Number.isSafeInteger(previous) && previous >= 0) records[key] = previous;
+          }
+          return {
+            records,
+            difficulty: Object.hasOwn(difficulties, data.difficulty) ? data.difficulty : 'medium',
+            role: Object.hasOwn(roles, data.role) ? data.role : fallback.role,
+            name: typeof data.name === 'string' ? data.name.slice(0, 18) : '',
+            muted: data.muted === true
+          };
+        } catch {
+          return fallback;
+        }
+      }
+
+      function saveProfile() {
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(profile)); }
+        catch { /* Rekor tetap tersedia selama sesi ini. */ }
+      }
+
+      function mode() { return run?.mode || 'menu'; }
+      function say(message) { $('announcer').textContent = message; }
+
+      function prepareAudio() {
+        if (profile.muted) return;
+        try {
+          const Audio = window.AudioContext || window.webkitAudioContext;
+          if (!Audio) return;
+          if (!audio) audio = new Audio();
+          if (audio.state === 'suspended') audio.resume().catch(() => {});
+        } catch { /* Game tetap berjalan jika suara tidak tersedia. */ }
+      }
+
+      const sounds = {
+        attack: [[203, 117, 0, 0.07, 0.042]],
+        hit: [[125, 83, 0, 0.075, 0.065]],
+        kill: [[330, 478, 0, 0.10, 0.05]],
+        hurt: [[115, 66, 0, 0.15, 0.064]],
+        skill: [[172, 370, 0, 0.17, 0.06], [390, 610, 0.07, 0.21, 0.036]],
+        defense: [[215, 275, 0, 0.12, 0.044], [390, 449, 0.05, 0.18, 0.032]],
+        level: [[330, 350, 0, 0.19, 0.045], [440, 460, 0.08, 0.19, 0.044], [554, 585, 0.16, 0.27, 0.04]],
+        clear: [[294, 311, 0, 0.18, 0.05], [392, 419, 0.1, 0.22, 0.047], [494, 520, 0.19, 0.29, 0.043]],
+        wave: [[147, 178, 0, 0.18, 0.045], [220, 254, 0.10, 0.18, 0.032]],
+        pickup: [[470, 554, 0, 0.13, 0.035]],
+        altar: [[330, 360, 0, 0.2, 0.04], [494, 530, 0.09, 0.23, 0.04]],
+        blessing: [[392, 419, 0, 0.18, 0.046], [494, 531, 0.10, 0.22, 0.043], [659, 698, 0.20, 0.31, 0.04]],
+        dead: [[294, 219, 0, 0.24, 0.048], [196, 123, 0.16, 0.31, 0.054]]
+      };
+
+      function sound(name) {
+        if (!audio || audio.state !== 'running' || profile.muted) return;
+        try {
+          for (const [frequency, end, offset, length, volume] of sounds[name]) {
+            const start = audio.currentTime + offset;
+            const oscillator = audio.createOscillator();
+            const gain = audio.createGain();
+            oscillator.type = 'triangle';
+            oscillator.frequency.setValueAtTime(frequency, start);
+            oscillator.frequency.exponentialRampToValueAtTime(end, start + length);
+            gain.gain.setValueAtTime(0.0001, start);
+            gain.gain.linearRampToValueAtTime(volume, start + 0.013);
+            gain.gain.exponentialRampToValueAtTime(0.0001, start + length);
+            oscillator.connect(gain);
+            gain.connect(audio.destination);
+            oscillator.start(start);
+            oscillator.stop(start + length + 0.015);
+          }
+        } catch { /* Suara tidak memengaruhi pertarungan. */ }
+      }
+
+      function renderSound() {
+        $('sound-icon').setAttribute('href', profile.muted ? '#i-mute' : '#i-sound');
+        $('sound-button').setAttribute('aria-label', profile.muted ? 'Nyalakan suara' : 'Matikan suara');
+      }
+
+      function toggleSound() {
+        profile.muted = !profile.muted;
+        renderSound();
+        saveProfile();
+        if (!profile.muted) prepareAudio();
+      }
+
+      function updateBars(id, value, maximum) {
+        const bar = $(`${id}-bar`);
+        bar.setAttribute('aria-valuenow', value);
+        bar.setAttribute('aria-valuemax', maximum);
+        $(`${id}-fill`).style.width = `${clamp(value / maximum, 0, 1) * 100}%`;
+      }
+
+      function updateQuest(active) {
+        const found = run?.visitedAltars.size ?? 0;
+        const total = ALTARS.length;
+        const nearby = active ? run.nearbyAltar() : null;
+        $('quest-count').textContent = `${found} / ${total}`;
+        $('map-progress').textContent = `${found}/${total}`;
+        $('quest-description').textContent = found === total
+          ? 'Berkah lengkap. +480 poin dan +18% kekuatan dasar.'
+          : 'Temukan tiga altar. Setiap altar memberi poin, XP, dan pemulihan HP.';
+        for (const row of altarRows) {
+          const visited = run?.visitedAltars.has(row.dataset.altar) ?? false;
+          row.classList.toggle('visited', visited);
+          row.querySelector('small').textContent = visited ? 'Aktif' : 'Belum aktif';
+        }
+        $('rune-prompt').hidden = !nearby;
+        $('rune-prompt').textContent = nearby ? `${nearby.name} · E atau tombol Altar` : '';
+        for (const button of interactButtons) button.disabled = !nearby;
+        if (active) {
+          painter.drawMap(run);
+          $('arena-hint').textContent = inRiver(run.player.x, run.player.y)
+            ? 'Arus memperlambat gerak. Gunakan jembatan untuk menyeberang cepat.'
+            : 'Cari altar di minimap dan waspadai tanda serangan.';
+        }
+      }
+
+      function updateThreat(active) {
+        const threat = active ? run.scanThreats() : null;
+        const visible = !!threat?.count;
+        $('arena-alert').hidden = !visible;
+        $('stage').dataset.danger = visible ? (threat.incoming ? 'attack' : 'near') : '';
+        if (!visible) return;
+        const title = threat.incoming ? 'SERANGAN MASUK' : 'MUSUH MENDEKAT';
+        const count = `${threat.count} musuh dalam jangkauan`;
+        if ($('alert-title').textContent !== title) $('alert-title').textContent = title;
+        if ($('alert-count').textContent !== count) $('alert-count').textContent = count;
+      }
+
+      function updateHUD() {
+        const role = roles[selectedRole];
+        const difficulty = difficulties[selectedDifficulty];
+        const player = run?.player;
+        const initialHP = Math.round(role.health * difficulty.playerHealth);
+        const health = player?.health ?? initialHP;
+        const maximum = player?.maxHealth ?? initialHP;
+        const level = run?.level ?? 1;
+        const active = mode() === 'playing';
+        const cooldown = player?.skillTimer ?? 0;
+        const cooldownText = cooldown > 0 ? `${decimal.format(Math.ceil(cooldown * 10) / 10)} dtk` : 'Siap';
+        const defenseTimer = player?.defenseTimer ?? 0;
+        const guarding = (player?.guard ?? 0) > 0;
+        const defenseText = defenseTimer > 0 ? `${decimal.format(Math.ceil(defenseTimer * 10) / 10)} dtk` : 'Siap';
+        const xp = run?.xp ?? 0;
+        const nextXp = run?.nextXp ?? 90;
+        $('hp-text').textContent = `${health} / ${maximum} HP`;
+        $('hp-bar').classList.toggle('low', health / maximum < 0.3);
+        $('level-text').textContent = `Lv. ${level}`;
+        $('xp-text').textContent = `${xp} / ${nextXp} EXP`;
+        $('mode-text').textContent = difficulty.label;
+        updateBars('hp', health, maximum);
+        updateBars('xp', xp, nextXp);
+        $('wave-number').textContent = run ? number.format(run.wave) : '—';
+        $('enemy-count').textContent = run ? `${run.enemies.length + run.pending.length} tersisa` : 'Pilih kelas';
+        $('score-number').textContent = number.format(run?.score ?? 0);
+        $('kill-count').textContent = `${number.format(run?.kills ?? 0)} monster · ${number.format(run?.amber ?? 0)} damar`;
+        $('best-label').textContent = `Rekor ${difficulty.label}`;
+        $('best-score').textContent = number.format(profile.records[selectedDifficulty]);
+        $('class-health').textContent = maximum;
+        $('class-damage').textContent = Math.round(role.damage * (player?.power ?? 1));
+        $('class-speed').textContent = player?.speed ?? role.speed;
+        $('class-subtitle').textContent = run ? `${run.name} · Lv. ${level}` : role.subtitle;
+        $('skill-status').textContent = cooldownText;
+        $('touch-skill-label').textContent = cooldown > 0 ? cooldownText : 'Skill';
+        $('defense-status').textContent = guarding ? 'Perisai aktif' : defenseText;
+        $('touch-defense-label').textContent = guarding ? 'Aktif' : defenseTimer > 0 ? defenseText : 'Defense';
+        for (const button of holdButtons) button.disabled = !active;
+        for (const button of skillButtons) button.disabled = !active || cooldown > 0;
+        for (const button of defenseButtons) button.disabled = !active || defenseTimer > 0;
+        updateQuest(active);
+        updateThreat(active);
+      }
+
+      function showRole() {
+        const role = roles[selectedRole];
+        for (const button of roleButtons) button.setAttribute('aria-pressed', String(button.dataset.role === selectedRole));
+        for (const button of difficultyButtons) button.setAttribute('aria-pressed', String(button.dataset.difficulty === selectedDifficulty));
+        for (const id of ['hud-avatar', 'class-emblem', 'attack-button', 'skill-button']) $(id).style.setProperty('--role-color', role.ink);
+        for (const id of ['hud-role-icon', 'class-icon', 'attack-icon']) $(id).setAttribute('href', `#i-${selectedRole}`);
+        $('class-title').textContent = role.label;
+        $('class-description').textContent = role.description;
+        $('attack-name').textContent = role.attack;
+        $('skill-name').textContent = role.skill;
+        $('skill-description').textContent = role.skillDescription;
+        updateHUD();
+      }
+
+      function releasePointer(pointerId) {
+        const press = pointers.get(pointerId);
+        if (!press) return;
+        pointers.delete(pointerId);
+        if (![...pointers.values()].some(other => other.button === press.button)) press.button.classList.remove('is-held');
+      }
+
+      function resetJoystick() {
+        const pointerId = joystickPointer;
+        joystickPointer = null;
+        analogX = 0;
+        analogY = 0;
+        joystick.style.setProperty('--stick-x', '0px');
+        joystick.style.setProperty('--stick-y', '0px');
+        if (pointerId !== null && joystick.hasPointerCapture?.(pointerId)) joystick.releasePointerCapture(pointerId);
+      }
+
+      function moveJoystick(event) {
+        const rect = joystick.getBoundingClientRect();
+        const reach = Math.min(rect.width, rect.height) * 0.29;
+        if (reach <= 0) return;
+        const dx = event.clientX - rect.left - rect.width / 2;
+        const dy = event.clientY - rect.top - rect.height / 2;
+        const distance = Math.hypot(dx, dy);
+        const unitX = distance ? dx / distance : 0;
+        const unitY = distance ? dy / distance : 0;
+        const power = clamp((distance / reach - 0.12) / 0.88, 0, 1);
+        analogX = unitX * power;
+        analogY = unitY * power;
+        joystick.style.setProperty('--stick-x', `${unitX * Math.min(distance, reach)}px`);
+        joystick.style.setProperty('--stick-y', `${unitY * Math.min(distance, reach)}px`);
+      }
+
+      function clearInput() {
+        keyboard.clear();
+        for (const pointerId of pointers.keys()) releasePointer(pointerId);
+        resetJoystick();
+        attackQueued = false;
+        skillQueued = false;
+        defenseQueued = false;
+        interactQueued = false;
+      }
+
+      function fullscreenActive() {
+        return document.fullscreenElement === gameShell || gameShell.classList.contains('immersive');
+      }
+
+      function renderFullscreen() {
+        const active = fullscreenActive();
+        $('fullscreen-icon').setAttribute('href', active ? '#i-contract' : '#i-expand');
+        $('fullscreen-button').setAttribute('aria-pressed', String(active));
+        $('fullscreen-button').setAttribute('aria-label', active ? 'Keluar dari layar penuh' : 'Layar penuh');
+        painter.resize();
+      }
+
+      function immersive(active) {
+        gameShell.classList.toggle('immersive', active);
+        document.body.classList.toggle('immersive-open', active);
+        clearInput();
+        renderFullscreen();
+      }
+
+      async function toggleFullscreen() {
+        if (fullscreenBusy) return;
+        fullscreenBusy = true;
+        try {
+          if (gameShell.classList.contains('immersive')) {
+            immersive(false);
+          } else if (document.fullscreenElement === gameShell) {
+            await document.exitFullscreen();
+          } else if (typeof gameShell.requestFullscreen === 'function') {
+            try {
+              await gameShell.requestFullscreen();
+              if (document.fullscreenElement !== gameShell) immersive(true);
+            } catch {
+              immersive(true);
+            }
+          } else {
+            immersive(true);
+          }
+        } catch {
+          say('Tidak bisa mengubah layar penuh saat ini.');
+        } finally {
+          fullscreenBusy = false;
+          renderFullscreen();
+        }
+      }
+
+      function updateScreen() {
+        const current = mode();
+        if (current === shownMode) return;
+        const initial = shownMode === '';
+        shownMode = current;
+        clearInput();
+        $('stage').dataset.mode = current;
+        for (const [screenMode, section] of Object.entries(screens)) section.hidden = screenMode !== current;
+        $('touch-controls').hidden = current !== 'playing';
+        $('map-overlay').hidden = current !== 'playing';
+        $('pause-button').disabled = current !== 'playing' && current !== 'paused';
+        $('pause-icon').setAttribute('href', current === 'paused' ? '#i-play' : '#i-pause');
+        $('pause-button').setAttribute('aria-label', current === 'paused' ? 'Lanjutkan permainan' : 'Jeda permainan');
+
+        const messages = {
+          menu: ['MENUNGGU PETARUNG', 'Pilih kelas dan mode, lalu mulai tanding.'],
+          playing: ['EKSPEDISI BERLANGSUNG', 'Cari altar di minimap dan waspadai tanda serangan.'],
+          paused: ['DIJEDA', 'Lanjutkan dengan P atau Esc.'],
+          upgrade: ['GELOMBANG SELESAI', 'Ambil satu berkah untuk lanjut.'],
+          dead: ['AKHIR RUN', 'Main lagi atau coba kelas lain.']
+        };
+        $('arena-status').textContent = messages[current][0];
+        $('arena-hint').textContent = messages[current][1];
+        if (current === 'upgrade') {
+          $('upgrade-kicker').textContent = `GELOMBANG ${run.wave} TUNTAS`;
+          $('upgrade-description').textContent = `Bonus ${number.format(run.lastBonus)} poin. Pilih satu peningkatan untuk gelombang ${run.wave + 1}.`;
+          say(`Gelombang ${run.wave} tuntas. Pilih berkah rune.`);
+        }
+        if (current === 'dead') {
+          $('death-kicker').textContent = run.score > bestAtStart ? `REKOR ${run.difficulty.label.toUpperCase()} BARU` : 'AKHIR PERTARUNGAN';
+          $('death-description').textContent = `${run.name}, ${run.role.label} level ${run.level}, bertahan hingga gelombang ${run.wave} di mode ${run.difficulty.label}.`;
+          $('final-score').textContent = number.format(run.score);
+          $('final-kills').textContent = number.format(run.kills);
+          $('final-wave').textContent = number.format(run.wave);
+          say(`Petarungmu tumbang dengan ${number.format(run.score)} poin.`);
+        }
+        if (!initial) {
+          const focusTarget = current === 'playing' ? canvas : screens[current];
+          focusTarget.focus({ preventScroll: true });
+        }
+        painter.resize();
+        updateHUD();
+      }
+
+      function startGame() {
+        const name = $('hero-name').value.trim().replace(/\s+/gu, ' ').slice(0, 18);
+        profile.name = name;
+        profile.role = selectedRole;
+        profile.difficulty = selectedDifficulty;
+        bestAtStart = profile.records[selectedDifficulty];
+        saveProfile();
+        prepareAudio();
+        run = new Run(selectedRole, name || 'Pengembara', selectedDifficulty);
+        updateScreen();
+      }
+
+      function togglePause() {
+        if (mode() === 'playing') run.mode = 'paused';
+        else if (mode() === 'paused') { run.mode = 'playing'; prepareAudio(); }
+        else return;
+        updateScreen();
+      }
+
+      function returnToMenu() {
+        run = null;
+        showRole();
+        updateScreen();
+      }
+
+      function commands() {
+        const actions = new Set([...keyboard].map(code => keyActions[code]));
+        let aim = null;
+        for (const press of pointers.values()) {
+          actions.add(press.action);
+          if (press.aim) aim = press.aim;
+        }
+        const x = Number(actions.has('right')) - Number(actions.has('left'));
+        const y = Number(actions.has('down')) - Number(actions.has('up'));
+        return {
+          x: x || y ? x : analogX,
+          y: x || y ? y : analogY,
+          attack: actions.has('attack') || attackQueued,
+          skill: skillQueued,
+          defense: defenseQueued,
+          interact: interactQueued,
+          aim
+        };
+      }
+
+      function handleEvents() {
+        if (run.score > profile.records[run.difficultyKey]) {
+          profile.records[run.difficultyKey] = run.score;
+          saveProfile();
+        }
+        if (!run.events.length) return;
+        const events = new Set(run.events.splice(0));
+        const strongest = ['dead', 'clear', 'blessing', 'altar', 'level', 'skill', 'defense', 'hurt', 'kill', 'pickup', 'hit', 'wave', 'attack'].find(name => events.has(name));
+        if (strongest) sound(strongest);
+        if (events.has('wave')) say(`Gelombang ${run.wave} dimulai.`);
+        if (events.has('level')) say(`Naik ke level ${run.level}.`);
+        if (events.has('altar')) say(`${run.visitedAltars.size} altar sudah aktif.`);
+        if (events.has('blessing')) say('Berkah Rimba lengkap. Poin dan kekuatan bertambah.');
+      }
+
+      function frame(timestamp) {
+        const dt = clamp((timestamp - lastFrame) / 1000, 0, 0.034);
+        lastFrame = timestamp;
+        if (mode() === 'playing') {
+          const command = commands();
+          attackQueued = false;
+          skillQueued = false;
+          defenseQueued = false;
+          interactQueued = false;
+          run.step(dt, command);
+          handleEvents();
+          updateScreen();
+          if (timestamp - lastHUD >= 90) { updateHUD(); lastHUD = timestamp; }
+        }
+        painter.draw(run, selectedRole, timestamp / 1000);
+        requestAnimationFrame(frame);
+      }
+
+      $('hero-name').value = profile.name;
+      $('start-form').addEventListener('submit', event => { event.preventDefault(); if (mode() === 'menu') startGame(); });
+      $('retry-button').addEventListener('click', startGame);
+      $('resume-button').addEventListener('click', togglePause);
+      $('pause-button').addEventListener('click', togglePause);
+      $('fullscreen-button').addEventListener('click', toggleFullscreen);
+      $('sound-button').addEventListener('click', toggleSound);
+      document.querySelectorAll('[data-menu]').forEach(button => button.addEventListener('click', returnToMenu));
+
+      for (const button of roleButtons) {
+        button.addEventListener('click', () => {
+          if (mode() !== 'menu') return;
+          selectedRole = button.dataset.role;
+          profile.role = selectedRole;
+          saveProfile();
+          showRole();
+          say(`${roles[selectedRole].label} dipilih.`);
+        });
+      }
+      for (const button of difficultyButtons) {
+        button.addEventListener('click', () => {
+          if (mode() !== 'menu') return;
+          selectedDifficulty = button.dataset.difficulty;
+          profile.difficulty = selectedDifficulty;
+          saveProfile();
+          showRole();
+          say(`Mode ${difficulties[selectedDifficulty].label} dipilih.`);
+        });
+      }
+      document.querySelectorAll('[data-upgrade]').forEach(button => button.addEventListener('click', () => {
+        if (!run?.chooseUpgrade(button.dataset.upgrade)) return;
+        prepareAudio();
+        updateScreen();
+      }));
+
+      window.addEventListener('keydown', event => {
+        if (event.target instanceof Element && event.target.closest('input, textarea, [contenteditable="true"]')) return;
+        if (event.ctrlKey || event.metaKey || event.altKey) return;
+        if (!event.repeat && event.code === 'KeyM') toggleSound();
+        if (!event.repeat && event.code === 'KeyF') {
+          event.preventDefault();
+          toggleFullscreen();
+          return;
+        }
+        if (event.code === 'Escape' && gameShell.classList.contains('immersive')) {
+          event.preventDefault();
+          immersive(false);
+          return;
+        }
+        if (!event.repeat && (event.code === 'KeyP' || event.code === 'Escape') && ['playing', 'paused'].includes(mode())) {
+          event.preventDefault();
+          togglePause();
+          return;
+        }
+        if (mode() !== 'playing') return;
+        if (Object.hasOwn(keyActions, event.code)) {
+          event.preventDefault();
+          keyboard.add(event.code);
+          if (event.code === 'Space' && !event.repeat) attackQueued = true;
+        } else if (event.code === 'KeyQ') {
+          event.preventDefault();
+          if (!event.repeat) skillQueued = true;
+        } else if (event.code === 'KeyE') {
+          event.preventDefault();
+          if (!event.repeat) interactQueued = true;
+        } else if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
+          event.preventDefault();
+          if (!event.repeat) defenseQueued = true;
+        }
+      });
+      window.addEventListener('keyup', event => keyboard.delete(event.code));
+      window.addEventListener('blur', clearInput);
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden && mode() === 'playing') togglePause();
+      });
+      document.addEventListener('fullscreenchange', () => {
+        clearInput();
+        renderFullscreen();
+      });
+
+      joystick.addEventListener('pointerdown', event => {
+        if (mode() !== 'playing' || event.button !== 0 || joystickPointer !== null) return;
+        event.preventDefault();
+        joystickPointer = event.pointerId;
+        try { joystick.setPointerCapture(event.pointerId); } catch { /* Pointerup tetap dipantau di window. */ }
+        moveJoystick(event);
+      });
+      joystick.addEventListener('pointermove', event => {
+        if (event.pointerId === joystickPointer) moveJoystick(event);
+      });
+      joystick.addEventListener('lostpointercapture', event => {
+        if (event.pointerId === joystickPointer) resetJoystick();
+      });
+
+      for (const button of holdButtons) {
+        button.addEventListener('pointerdown', event => {
+          if (mode() !== 'playing' || event.button !== 0) return;
+          event.preventDefault();
+          const action = button.dataset.hold;
+          pointers.set(event.pointerId, { action, button, originX: event.clientX, originY: event.clientY, aim: null });
+          button.classList.add('is-held');
+          if (action === 'attack') attackQueued = true;
+          try { button.setPointerCapture(event.pointerId); } catch { /* Pelepasan juga dipantau di window. */ }
+        });
+        button.addEventListener('pointermove', event => {
+          const press = pointers.get(event.pointerId);
+          if (!press || press.button !== button || !('aim' in button.dataset)) return;
+          const dx = event.clientX - press.originX;
+          const dy = event.clientY - press.originY;
+          const length = Math.hypot(dx, dy);
+          press.aim = length > 12 ? { x: dx / length, y: dy / length } : null;
+        });
+        button.addEventListener('lostpointercapture', event => releasePointer(event.pointerId));
+        button.addEventListener('click', event => {
+          if (event.detail === 0 && mode() === 'playing' && button.dataset.hold === 'attack') attackQueued = true;
+        });
+      }
+      function endPointer(event) {
+        releasePointer(event.pointerId);
+        if (event.pointerId === joystickPointer) resetJoystick();
+      }
+      window.addEventListener('pointerup', endPointer);
+      window.addEventListener('pointercancel', endPointer);
+
+      function bindTap(button, press) {
+        button.addEventListener('pointerdown', event => {
+          if (mode() === 'playing' && !button.disabled && event.button === 0) {
+            event.preventDefault();
+            press();
+          }
+        });
+        button.addEventListener('click', event => {
+          if (event.detail === 0 && mode() === 'playing' && !button.disabled) press();
+        });
+      }
+      for (const button of skillButtons) bindTap(button, () => { skillQueued = true; });
+      for (const button of defenseButtons) bindTap(button, () => { defenseQueued = true; });
+      for (const button of interactButtons) bindTap(button, () => { interactQueued = true; });
+
+      if ('ResizeObserver' in window) new ResizeObserver(() => painter.resize()).observe(canvas);
+      window.addEventListener('resize', () => painter.resize());
+      renderSound();
+      showRole();
+      updateScreen();
+      requestAnimationFrame(frame);
+    })();
+    // CONTROLLER_END
+  </script>
+</body>
+</html>
